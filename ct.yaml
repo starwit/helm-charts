@@ -1,0 +1,12 @@
+# A configuration file for https://github.com/helm/chart-testing-action
+# This file is required to be in the repository root and named ct.yaml
+---
+# See https://github.com/helm/chart-testing#configuration
+remote: origin
+target-branch: main
+chart-dirs:
+- charts
+chart-repos: []
+# Some of tests require longer than default timeout
+helm-extra-args: --timeout 15m --debug
+check-version-increment: true
