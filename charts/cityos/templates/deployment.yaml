@@ -24,6 +24,23 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "cityos.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait4mariadb
+          image: "{{ .Values.initContainers.wait4mariadb.image }}:{{ .Values.initContainers.wait4mariadb.tag }}"
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.initContainers.securityContext | nindent 12 }}
+          command: 
+            - 'sh'
+            - '-c'
+            - 'until nslookup {{ .Release.Name }}-mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done'
+        - name: checkkeycloak
+          image: "{{ .Values.initContainers.curl.image }}:{{ .Values.initContainers.curl.tag }}"
+          command: ['sh', '-c', 'while [ `curl -Lk --write-out "%{http_code}\n" --silent --output /dev/null "{{ .Values.global.keycloak.authServerUrl }}"` -ne 200 ]; do sleep 2; done']
 
       containers:
         - name: {{ .Chart.Name }}
