@@ -38,9 +38,9 @@ spec:
             - 'sh'
             - '-c'
             - 'until nslookup {{ .Release.Name }}-mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done'
-        - name: checkkeycloak
-          image: "{{ .Values.initContainers.curl.image }}:{{ .Values.initContainers.curl.tag }}"
-          command: ['sh', '-c', 'while [ `curl -Lk --write-out "%{http_code}\n" --silent --output /dev/null "{{ .Values.global.keycloak.authServerUrl }}"` -ne 200 ]; do sleep 2; done']
+#        - name: checkkeycloak
+#          image: "{{ .Values.initContainers.curl.image }}:{{ .Values.initContainers.curl.tag }}"
+#          command: ['sh', '-c', 'while [ `curl -Lk --write-out "%{http_code}\n" --silent --output /dev/null "{{ .Values.global.keycloak.authServerUrl }}"` -ne 200 ]; do sleep 2; done']
 
       containers:
         - name: {{ .Chart.Name }}
