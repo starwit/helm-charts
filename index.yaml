@@ -2,6 +2,23 @@ apiVersion: v1
 entries:
   cityos:
   - apiVersion: v2
+    appVersion: v1.1.1
+    created: "2023-03-07T13:05:21.51140136Z"
+    dependencies:
+    - name: keycloak
+      repository: https://codecentric.github.io/helm-charts
+      version: 18.1.1
+    - name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.0.13
+    description: A Helm chart for cityos
+    digest: ef696603af038ffa09442dd7ce7db71c2b03f9d76fc54ea54a86ea0da9b9ede2
+    name: cityos
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/cityos-1.1.1/cityos-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
     appVersion: v1.1.0
     created: "2023-03-05T22:08:50.871795089Z"
     dependencies:
@@ -35,4 +52,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/timescaledb-single-0.27.0/timescaledb-single-0.27.0.tgz
     version: 0.27.0
-generated: "2023-03-05T22:08:50.871803189Z"
+generated: "2023-03-07T13:05:21.51141136Z"
