@@ -137,4 +137,22 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/timescaledb-single-0.27.0/timescaledb-single-0.27.0.tgz
     version: 0.27.0
-generated: "2023-03-10T19:41:51.443763713Z"
+  traffic:
+  - apiVersion: v2
+    appVersion: v2.2.1
+    created: "2023-03-24T11:33:56.973146744Z"
+    dependencies:
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.9
+    - name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.32.11
+    description: A Helm chart for traffic analyser
+    digest: ca9e1c4ef20e19a80b0323ac28e71de793f772b17949bcd0e0f665a9994a50c8
+    name: traffic
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
+    version: 2.2.1
+generated: "2023-03-24T11:33:56.973164844Z"
