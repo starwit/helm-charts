@@ -139,6 +139,23 @@ entries:
     version: 0.27.0
   traffic:
   - apiVersion: v2
+    appVersion: v2.2.2
+    created: "2023-03-25T23:01:51.020796564Z"
+    dependencies:
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.9
+    - name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.32.11
+    description: A Helm chart for traffic analyser
+    digest: 701661736902edcabf3b1a730849336aafeddfb3117996a57e091d7f26a2cb2a
+    name: traffic
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.2/traffic-2.2.2.tgz
+    version: 2.2.2
+  - apiVersion: v2
     appVersion: v2.2.1
     created: "2023-03-24T11:33:56.973146744Z"
     dependencies:
@@ -155,4 +172,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
     version: 2.2.1
-generated: "2023-03-24T11:33:56.973164844Z"
+generated: "2023-03-25T23:01:51.020820865Z"
