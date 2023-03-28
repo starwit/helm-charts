@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cityos-backend.fullname" . }}
+  labels:
+    {{- include "cityos-backend.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cityos-backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cityos-backend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cityos-backend.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: wait4mariadb
+          image: "{{ .Values.mariadb.wait4mariadb.image }}:{{ .Values.initContainers.wait4mariadb.tag }}"
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.initContainers.securityContext | nindent 12 }}
+          command:
+            - 'sh'
+            - '-c'
+            - 'until nslookup {{ .Release.Name }}-mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done'
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mariadb://{{ .Release.Name }}-mariadb:3306/{{ .Values.mariadb.auth.database }}?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.mariadb.auth.username }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.mariadb.auth.password }}
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: /{{ .Values.cityos.contextPath }}
+            - name: SERVER_USE_FORWARD_HEADERS
+              value: "true"
+            - name: SERVER_FORWARD_HEADERS_STRATEGY
+              value: FRAMEWORK
+            - name: ENDPOINT_TRAFFIC
+              value: {{ .Values.cityos.endpoint.traffic }}
+            - name: ENDPOINT_GRAFANA
+              value: {{ .Values.cityos.endpoint.grafana }}
+            - name: CITYOS_AUTHENTICAITON_URI
+              value: "{{ .Values.cityos.auth.authServerURL }}"
+            - name: VW2_CLIENTID
+              value: "{{ .Values.cityos.vw2.clientId }}"
+            - name: VW2_CLIENT_SECRET
+              value: "{{ .Values.cityos.vw2.clientSecret }}"
+            - name: VW2_DATACAPTURERSTATUS
+              value: "{{ .Values.cityos.vw2.datacapturerStatusURL }}"
+            - name: VW2_DATACAPTURERCAMURL
+              value: "{{ .Values.cityos.vw2.datacapturerCameraURL }}"
+            - name: VW2_AUTHRUL
+              value: "{{ .Values.cityos.vw2.authURL }}"
+            - name: VW2_CAMERASERVICEURL
+              value: "{{ .Values.cityos.vw2.cameraServiceURL }}"
+            - name: ARCGIS_PORTAL_ID
+              value: "{{ .Values.cityos.arcgis.portalId }}"
+            - name: ARCGIS_CREDENTIALS_USERNAME
+              value: "{{ .Values.cityos.arcgis.username }}"
+            - name: ARCGIS_CREDENTIALS_PASSWORD
+              value: "{{ .Values.cityos.arcgis.password }}"
+            {{- with .Values.cityos.env }}
+            {{- tpl . $ | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /{{ include "cityos.fullname" . }}/monitoring/health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /{{ include "cityos.fullname" . }}/monitoring/health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

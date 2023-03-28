@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cityos-frontend.fullname" . }}
+  labels:
+    {{- include "cityos-frontend.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "cityos-frontend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cityos-frontend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cityos-frontend.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mariadb://{{ .Release.Name }}-mariadb:3306/{{ .Values.mariadb.auth.database }}?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.mariadb.auth.username }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: {{ .Values.mariadb.auth.password }}
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: /{{ include "cityos.fullname" . }}
+            - name: KEYCLOAK_AUTH-SERVER-URL
+              value: {{ .Values.global.keycloak.authServerUrl }}
+            - name: SERVER_USE_FORWARD_HEADERS
+              value: "true"
+            - name: SERVER_FORWARD_HEADERS_STRATEGY
+              value: FRAMEWORK
+            - name: ENDPOINT_TRAFFIC
+              value: {{ .Values.service.endpoint.traffic }}
+            - name: ENDPOINT_GRAFANA
+              value: {{ .Values.service.endpoint.grafana }}
+            - name: ENDPOINT_AUTH_ENABLE
+              value: "{{ .Values.service.endpoint.auth.enable }}"
+            {{- with .Values.frontendEnv }}
+            {{- tpl . $ | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
