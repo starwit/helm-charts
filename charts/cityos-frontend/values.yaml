@@ -10,7 +10,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v1.1.1-13"
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: regcred
 nameOverride: ""
 fullnameOverride: ""
 
@@ -81,7 +82,10 @@ tolerations: []
 
 affinity: {}
 
-frontendEnv:
-  API_URL: http://localhost:8081/citydashboard/
-  AUTH_AUTHORITY: http://localhost:8080/auth/realms/citydashboard
-  AUTH_CLIENT_ID: citydashboard
+frontend:
+  api:
+    baseUrl: http://localhost:8081/citydashboard/
+  auth:
+    authority: http://localhost:8080/auth/realms/citydashboard
+    clientId: citydashboard
+  publicEnv: []
