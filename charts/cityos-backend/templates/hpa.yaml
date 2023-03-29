@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "cityos-backend.fullname" . }}
+  name: {{ include "cityos.fullname" . }}
   labels:
-    {{- include "cityos-backend.labels" . | nindent 4 }}
+    {{- include "cityos.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "cityos-backend.fullname" . }}
+    name: {{ include "cityos.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
