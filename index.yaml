@@ -140,6 +140,16 @@ entries:
   cityos-frontend:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-04-04T18:42:49.929512235Z"
+    description: A Helm chart for deploying the cityOs frontend to a Kubernetes Cluster
+    digest: f3a069dcda23cc06f68caa809a16f482e890f7ba13e128fcc4ec41b8d7f85e36
+    name: cityos-frontend
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/cityos-frontend-0.1.2/cityos-frontend-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-04-04T18:22:21.852722123Z"
     description: A Helm chart for deploying the cityOs frontend to a Kubernetes Cluster
     digest: 9bbe152b112f7e357f7c4690ff367fe06ccfc5c3457107b9ee90877bcf6e86ba
@@ -217,4 +227,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
     version: 2.2.1
-generated: "2023-04-04T18:22:22.036835565Z"
+generated: "2023-04-04T18:42:49.929534836Z"
