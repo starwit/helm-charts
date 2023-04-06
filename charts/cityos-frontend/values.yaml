@@ -89,3 +89,8 @@ frontend:
     authority: http://localhost:8080/auth/realms/citydashboard
     clientId: citydashboard
   publicEnv: []
+
+timescale:
+  users:
+    - username: test1
+      password: 123
