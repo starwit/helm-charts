@@ -37,7 +37,7 @@ spec:
           command: 
             - 'sh'
             - '-c'
-            - 'until nslookup {{ .Release.Name }}-postgresql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done'
+            - 'until nslookup {{ .Values.postgresql.serviceurl }}.svc.cluster.local; do echo waiting for mydb; sleep 2; done'
 
       containers:
         - name: {{ .Chart.Name }}
