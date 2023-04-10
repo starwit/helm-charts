@@ -22,7 +22,7 @@ spec:
 ...
 {{- range .Values.backup.jobs }}
 ---
-{{- if semverCompare ">=1.21-0" $.Capabilities.KubeVersion.GitVersion -}}
+{{ if semverCompare ">=1.21-0" $.Capabilities.KubeVersion.GitVersion -}}
 apiVersion: batch/v1
 {{- else -}}
 apiVersion: batch/v1beta1
@@ -32,7 +32,7 @@ metadata:
   name: {{ template "timescaledb.fullname" $ }}-{{ .name }}
   labels:
     backup-type: {{ .type }}
-    {{ include "timescaledb-helm.labels" . | nindent 4 }}
+    {{ include "timescaledb-helm.labels" $ | nindent 4 }}
     app.kubernetes.io/component: backup
 spec:
   schedule: {{ quote .schedule }}
@@ -55,7 +55,8 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: {{ template "timescaledb.fullname" $ }}-{{ .type }}
-              image: curlimages/curl
+              image: "{{ $.Values.curlImage.repository }}:{{ $.Values.curlImage.tag }}"
+              imagePullPolicy: {{ $.Values.curlImage.pullPolicy }}
               command: ["/usr/bin/curl"]
               args:
               - --connect-timeout
