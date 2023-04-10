@@ -29,6 +29,8 @@ data:
     {{- .Files.Get "scripts/restore_or_initdb.sh" | nindent 4 }}
   post_init.sh: |-
     {{- .Files.Get "scripts/post_init.sh" | nindent 4 }}
+  post_init_user.sh: |-
+    {{- .Files.Get "scripts/post_init_user.sh" | nindent 4 }}
   patroni_callback.sh: |-
     {{- .Files.Get "scripts/patroni_callback.sh" | nindent 4 }}
   lifecycle_preStop.sql: |-
