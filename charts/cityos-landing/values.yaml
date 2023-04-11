@@ -8,7 +8,7 @@ image:
   repository: ghcr.io/starwit/city-landing
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.0.11"
+  tag: "v1.0.12"
 
 imagePullSecrets:
   - name: regcred
