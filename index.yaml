@@ -243,6 +243,23 @@ entries:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.3/traffic-2.2.3.tgz
     version: 2.2.3
   - apiVersion: v2
+    appVersion: v2.2.3-2
+    created: "2023-04-11T09:06:53.377820931Z"
+    dependencies:
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.9
+    - name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.32.11
+    description: A Helm chart for traffic analyser
+    digest: 6bd3eb20a370f14daf82514bfed6a9f44b23a7147636112638410d7d48c4535e
+    name: traffic
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.3-2/traffic-2.2.3-2.tgz
+    version: 2.2.3-2
+  - apiVersion: v2
     appVersion: v2.2.3-1
     created: "2023-04-06T08:39:34.004586192Z"
     dependencies:
@@ -293,4 +310,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
     version: 2.2.1
-generated: "2023-04-10T15:48:17.815321728Z"
+generated: "2023-04-11T09:06:53.377989834Z"
