@@ -158,6 +158,21 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/cityos-frontend-0.1.1/cityos-frontend-0.1.1.tgz
     version: 0.1.1
+  cityos-landing:
+  - apiVersion: v2
+    appVersion: 1.0.11
+    created: "2023-04-17T10:49:53.083096595Z"
+    description: A Helm chart for deploying the cityOs landing page to a Kubernetes
+      Cluster
+    digest: 2f1f9883d7bd30b8c59783e862e6d4e953ab1d13978365bbf30f80f1cdba0998
+    maintainers:
+    - email: cedric.rische@starwit.de
+      name: DerCed
+    name: cityos-landing
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/cityos-landing-0.1.4/cityos-landing-0.1.4.tgz
+    version: 0.1.4
   timescaledb-single:
   - apiVersion: v1
     created: "2023-04-10T15:48:17.815123725Z"
@@ -310,4 +325,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
     version: 2.2.1
-generated: "2023-04-11T09:06:53.377989834Z"
+generated: "2023-04-17T10:49:53.083127996Z"
