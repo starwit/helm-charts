@@ -1,0 +1,120 @@
+# Default values for starwit-accounts-internal.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/starwit/starwit-accounts-config
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v1.0.1"
+
+imagePullSecrets:
+  - name: regcred
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+configurer:
+  keycloakUrl: http://keycloak:8080
+  keycloakUser: admin
+  keycloakPassword: yourpassword
+  extraEnv: |
+    - name: IDP_AZURE_CLIENT_ID
+      value:
+    - name: IDP_AZURE_CLIENT_SECRET
+      value:
+keycloak:
+  contextPath: starwit-auth
+  image:
+    tag: "21.1"
+  extraEnv: |
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: yourpassword
+    - name: PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KEYCLOAK_FRONTEND_URL
+      value: http://localhost/cityos-auth
+    - name: KC_DB_URL
+      value: jdbc:mariadb://mariadb/starwit-accounts-internal
+    - name: KC_DB
+      value: mariadb
+    - name: KC_DB_PASSWORD
+      value: yourpassword
+    - name: KC_DB_USERNAME
+      value: starwit-accounts-internal
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "traefik"
+    #      cert-manager.io/cluster-issuer: letsencrypt-prod
+    rules:
+      - host: localhost
+        paths:
+          - path: /starwit-auth
+            pathType: Prefix
+
+mariadb:
+  auth:
+    rootPassword: root
+    database: starwit-accounts-internal
+    username: starwit-accounts-internal
+    password: yourpassword
