@@ -1,0 +1,135 @@
+global:
+  ingress:
+    host:
+  keycloak:
+    authServerUrl: http://cityos-keycloak-http/cityos-auth
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/starwit/city-demos
+  pullPolicy: Always
+
+imagePullSecrets:
+  - name: citydockerreg
+nameOverride: ""
+fullnameOverride: ""
+
+initContainers:
+  resources: {}
+
+endpoints:
+  traffic: http://localhost/traffic/api
+  grafana: http://localhost/grafana
+endpointAuth:
+  enabled: true
+
+service:
+  type: ClusterIP
+  port: 80
+
+serviceAccount:
+  create: false
+
+# add extra environment params to app server
+extraEnv: |
+    - name: VW2_CLIENTID
+      value: clientid
+    - name: VW2_CLIENT_SECRET
+      value: secret
+    - name: VW2_DATACAPTURERSTATUS
+      value: https://carmel.vw2-demospace.de/vw2datacapture/api/datapoint
+    - name: VW2_DATACAPTURERCAMURL
+      value: https://carmel.vw2-demospace.de/vw2datacapture/api/cameras
+    - name: VW2_AUTHURL
+      value: https://carmel2.vw2-demospace.de/carmel-smart-cities-auth/realms/icv/protocol/openid-connect/token
+    - name: VW2_CAMERASERVICEURL
+      value: https://carmel2.vw2-demospace.de/carmel-smart-cities-cameraservice/v1/cameras
+
+ingress:
+  enabled: true
+  hosts:
+    - host: localhost
+#  tls:
+#    - secretName: host-tls
+#      hosts:
+#        - localhost
+
+mariadb:
+  auth:
+    rootPassword: root
+    database: citydashboard
+    username: citydashboard
+    password: yourpassword
+
+keycloak:
+  contextPath: cityos-auth
+  extraEnv: |
+    - name: KEYCLOAK_IMPORT
+      value: /realm/realm.json  
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: yourpassword
+    - name: PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KEYCLOAK_FRONTEND_URL
+      value: http://localhost/cityos-auth         
+  extraVolumeMounts: |
+    - name: realm-json
+      mountPath: "/realm/"
+      readOnly: true    
+  extraVolumes: |
+    - name: realm-json
+      configMap:
+        name: {{ .Release.Name }}-realm-json    
+  ingress:
+    enabled: true
+    rules:
+      - host: localhost
+        paths:
+          - path: /cityos-auth
+            pathType: Prefix
+#    tls: 
+#      - secretName: localhost-tls
+#        hosts:
+#        - localhost
+  
+  startupScripts:
+    # cli script that reconfigures WildFly
+    contextPath.cli: |
+      embed-server --server-config=standalone-ha.xml --std-out=echo
+      batch
+      {{- if ne .Values.contextPath "auth" }}
+      /subsystem=keycloak-server/:write-attribute(name=web-context,value={{ if eq .Values.contextPath "" }}/{{ else }}{{ .Values.contextPath }}{{ end }})
+      {{- if eq .Values.contextPath "" }}
+      /subsystem=undertow/server=default-server/host=default-host:write-attribute(name=default-web-module,value=keycloak-server.war)
+      {{- end }}
+      {{- end }}
+      run-batch
+      stop-embedded-server
+
+  livenessProbe: |
+    httpGet:
+      path: /cityos-auth/
+      port: http
+    initialDelaySeconds: 0
+    timeoutSeconds: 5
+
+  # Readiness probe configuration
+  readinessProbe: |
+    httpGet:
+      path: /cityos-auth/realms/master
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 1
+  # Startup probe configuration
+
+  startupProbe: |
+    httpGet:
+      path: /cityos-auth/
+      port: http
+    initialDelaySeconds: 30
+    timeoutSeconds: 1
+    failureThreshold: 60
+    periodSeconds: 5

@@ -1,0 +1,25 @@
+# Default values for platform-local.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  credentials:
+    ghcrStarwit:
+      user: null
+      password: null
+
+cityos:
+  imagePullSecrets:
+    - name: ghcr-starwit
+  db:
+    credentials:
+    jdbcUrl:
+
+trafficanalysis:
+  enabled: false
+  imagePullSecrets:
+    - name: ghcr-starwit
+  db:
+    credentials:
+    jdbcUrl:  
+

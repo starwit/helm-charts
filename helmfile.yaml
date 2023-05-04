@@ -1,0 +1,6 @@
+releases:
+  - chart: ./charts/cityos
+    cleanupOnFail: false
+    devel: false
+    name: cityos
+    skipDeps: false
