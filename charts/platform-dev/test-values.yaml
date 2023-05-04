@@ -2,5 +2,5 @@
 global:
   credentials:
     ghcrStarwit:
-      user: test
-      password: blablubb
+      user: testuser
+      password: testpassword

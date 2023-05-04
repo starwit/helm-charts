@@ -11,3 +11,15 @@ global:
 cityos:
   imagePullSecrets:
     - name: ghcr-starwit
+  db:
+    credentials:
+    jdbcUrl:
+
+trafficanalysis:
+  enabled: false
+  imagePullSecrets:
+    - name: ghcr-starwit
+  db:
+    credentials:
+    jdbcUrl:  
+
