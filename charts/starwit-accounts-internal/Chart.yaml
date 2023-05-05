@@ -27,3 +27,7 @@ dependencies:
   - name: keycloak
     version: 15.0.0
     repository: https://charts.bitnami.com/bitnami
+
+maintainers:
+  - name: DerCed
+    email: cedric.rische@starwit.de
