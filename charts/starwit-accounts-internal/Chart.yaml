@@ -25,8 +25,5 @@ appVersion: "1.16.0"
 
 dependencies:
   - name: keycloak
-    version: 18.4.3
-    repository: https://codecentric.github.io/helm-charts
-  - name: mariadb
-    version: 11.0.13
+    version: 15.0.0
     repository: https://charts.bitnami.com/bitnami

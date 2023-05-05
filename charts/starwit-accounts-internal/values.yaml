@@ -71,50 +71,39 @@ tolerations: []
 
 affinity: {}
 
-configurer:
-  keycloakUrl: http://keycloak:8080
-  keycloakUser: admin
-  keycloakPassword: yourpassword
-  extraEnv: |
-    - name: IDP_AZURE_CLIENT_ID
-      value:
-    - name: IDP_AZURE_CLIENT_SECRET
-      value:
 keycloak:
-  contextPath: starwit-auth
-  image:
-    tag: "21.1"
-  extraEnv: |
-    - name: KEYCLOAK_USER
-      value: admin
-    - name: KEYCLOAK_PASSWORD
-      value: yourpassword
-    - name: PROXY_ADDRESS_FORWARDING
-      value: "true"
-    - name: KEYCLOAK_FRONTEND_URL
-      value: http://localhost/cityos-auth
-    - name: KC_DB_URL
-      value: jdbc:mariadb://mariadb/starwit-accounts-internal
-    - name: KC_DB
-      value: mariadb
-    - name: KC_DB_PASSWORD
-      value: yourpassword
-    - name: KC_DB_USERNAME
-      value: starwit-accounts-internal
+  auth:
+    adminUser: admin
+    adminPassword: admin
+  production: true
+  proxy: edge
+  keycloakConfigCli:
+    enabled: true
+    command:
+      - java
+      - -jar
+      - /app/keycloak-config-cli.jar
+    image:
+      registry: ghcr.io
+      repository: starwit/starwit-accounts-config
+      tag: v1.0.1
+      pullSecrets:
+        - regcred
+    extraEnvVars: |
+      - name: IDP_AZURE_CLIENT_ID
+        value: hallo
+      - name: IDP_AZURE_CLIENT_SECRET
+        value: hallo
+  postgresql:
+    enabled: true
+    auth:
+      postgresPassword: auth
+      username: auth
+      password: auth
+      database: keycloak
   ingress:
     enabled: true
+    hostname: localhost
     annotations:
       kubernetes.io/ingress.class: "traefik"
     #      cert-manager.io/cluster-issuer: letsencrypt-prod
-    rules:
-      - host: localhost
-        paths:
-          - path: /starwit-auth
-            pathType: Prefix
-
-mariadb:
-  auth:
-    rootPassword: root
-    database: starwit-accounts-internal
-    username: starwit-accounts-internal
-    password: yourpassword
