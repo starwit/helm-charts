@@ -1,8 +1,21 @@
+environments: 
+  dev-local:
+    values:
+      - imagePullSecret: github-pull-secret
+  
+---
+
 releases:
   - chart: ./charts/cityos
-    cleanupOnFail: false
-    devel: false
     name: cityos
-    skipDeps: false
-    secrets:
-      - ghcr-starwit-pull-secret.enc.yaml
+    values:
+      - imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+    # secrets:
+    #   - ghcr-starwit-pull-secret.enc.yaml
+
+  # - chart: ./charts/cityos-frontend
+  #   name: cityos-frontend
+  #   values:
+  #     - imagePullSecrets:
+  #       - name: {{ .Values.imagePullSecret }}
