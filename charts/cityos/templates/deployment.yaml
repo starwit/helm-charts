@@ -55,7 +55,7 @@ spec:
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: /{{ include "cityos.fullname" . }}
             - name: KEYCLOAK_AUTH-SERVER-URL
-              value: {{ .Values.global.keycloak.authServerUrl }}
+              value: http://{{ .Release.Name }}-keycloak-http/{{ .Values.keycloak.contextPath }}
             - name: SERVER_USE_FORWARD_HEADERS 
               value: "true"
             - name: SERVER_FORWARD_HEADERS_STRATEGY
@@ -71,7 +71,7 @@ spec:
             {{- end }}              
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:

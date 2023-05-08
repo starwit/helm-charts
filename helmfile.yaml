@@ -4,3 +4,5 @@ releases:
     devel: false
     name: cityos
     skipDeps: false
+    secrets:
+      - ghcr-starwit-pull-secret.enc.yaml

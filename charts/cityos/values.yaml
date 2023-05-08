@@ -1,9 +1,3 @@
-global:
-  ingress:
-    host:
-  keycloak:
-    authServerUrl: http://cityos-keycloak-http/cityos-auth
-
 replicaCount: 1
 
 image:
@@ -24,13 +18,6 @@ endpoints:
 endpointAuth:
   enabled: true
 
-service:
-  type: ClusterIP
-  port: 80
-
-serviceAccount:
-  create: false
-
 # add extra environment params to app server
 extraEnv: |
     - name: VW2_CLIENTID
@@ -45,6 +32,9 @@ extraEnv: |
       value: https://carmel2.vw2-demospace.de/carmel-smart-cities-auth/realms/icv/protocol/openid-connect/token
     - name: VW2_CAMERASERVICEURL
       value: https://carmel2.vw2-demospace.de/carmel-smart-cities-cameraservice/v1/cameras
+
+serviceAccount:
+  create: false
 
 ingress:
   enabled: true
@@ -74,7 +64,7 @@ keycloak:
     - name: PROXY_ADDRESS_FORWARDING
       value: "true"
     - name: KEYCLOAK_FRONTEND_URL
-      value: http://localhost/cityos-auth         
+      value: http://localhost/cityos-auth
   extraVolumeMounts: |
     - name: realm-json
       mountPath: "/realm/"
