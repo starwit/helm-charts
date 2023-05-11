@@ -173,6 +173,24 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/cityos-landing-0.1.4/cityos-landing-0.1.4.tgz
     version: 0.1.4
+  starwit-accounts-internal:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-05-11T11:16:50.314966257Z"
+    dependencies:
+    - name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 15.0.0
+    description: Starwit Keycloak for employees - Internal use only!
+    digest: 29c3795f539b3f96cd9dabbacb04b1094a1a26077dc25d909bfef9ddf2885812
+    maintainers:
+    - email: cedric.rische@starwit.de
+      name: DerCed
+    name: starwit-accounts-internal
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/starwit-accounts-internal-0.1.0/starwit-accounts-internal-0.1.0.tgz
+    version: 0.1.0
   timescaledb-single:
   - apiVersion: v1
     created: "2023-04-10T15:48:17.815123725Z"
@@ -325,4 +343,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
     version: 2.2.1
-generated: "2023-04-17T10:49:53.083127996Z"
+generated: "2023-05-11T11:16:50.315052658Z"
