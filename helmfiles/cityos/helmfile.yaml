@@ -1,7 +1,5 @@
 environments: 
   dev-local:
-    values:
-      - imagePullSecret: ghcr-starwit
   
 ---
 repositories:
@@ -10,18 +8,23 @@ repositories:
 - name: bitnami
   url: https://charts.bitnami.com/bitnami
 
+templates:
+  default:
+    values:
+    - ../values.secrets.yaml
+
 releases:
-  - chart: ./charts/secrets
+  - chart: ../../charts/secrets
     name: secrets
     namespace: cityos
     createNamespace: true
-    values:
-      - values.secrets.yaml
-  - chart: ./charts/cityos
+    inherit:
+    - template: default
+  - chart: ../../charts/cityos
     name: cityos
     namespace: cityos
     createNamespace: true
     values:
       - imagePullSecrets:
-        - name: {{ .Values.imagePullSecret }}
+        - name: ghcr-starwit
 
