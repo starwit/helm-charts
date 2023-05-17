@@ -4,13 +4,21 @@ environments:
       - imagePullSecret: github-pull-secret
   
 ---
+repositories:
+- name: codecentric
+  url: https://codecentric.github.io/helm-charts
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
 
 releases:
   - chart: ./charts/cityos
     name: cityos
+    namespace: cityos
+    createNamespace: true
     values:
       - imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
+
     # secrets:
     #   - ghcr-starwit-pull-secret.enc.yaml
 
