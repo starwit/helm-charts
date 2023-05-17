@@ -1,7 +1,7 @@
 environments: 
   dev-local:
     values:
-      - imagePullSecret: github-pull-secret
+      - imagePullSecret: ghcr-starwit
   
 ---
 repositories:
@@ -11,6 +11,12 @@ repositories:
   url: https://charts.bitnami.com/bitnami
 
 releases:
+  - chart: ./charts/secrets
+    name: secrets
+    namespace: cityos
+    createNamespace: true
+    values:
+      - values.secrets.yaml
   - chart: ./charts/cityos
     name: cityos
     namespace: cityos
@@ -19,11 +25,3 @@ releases:
       - imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
 
-    # secrets:
-    #   - ghcr-starwit-pull-secret.enc.yaml
-
-  # - chart: ./charts/cityos-frontend
-  #   name: cityos-frontend
-  #   values:
-  #     - imagePullSecrets:
-  #       - name: {{ .Values.imagePullSecret }}
