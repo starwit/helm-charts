@@ -10,21 +10,24 @@ repositories:
 
 templates:
   default:
+    namespace: cityos
+    createNamespace: true
     values:
     - ../values.secrets.yaml
 
 releases:
-  - chart: ../../charts/secrets
-    name: secrets
-    namespace: cityos
-    createNamespace: true
+  - name: secrets
+    chart: ../../charts/secrets
     inherit:
     - template: default
-  - chart: ../../charts/cityos
-    name: cityos
-    namespace: cityos
-    createNamespace: true
+  - name: cityos
+    chart: ../../charts/cityos
+    inherit:
+    - template: default
+    needs:
+    - secrets
     values:
       - imagePullSecrets:
         - name: ghcr-starwit
+
 
