@@ -1,5 +1,10 @@
 environments: 
-  dev-local:
+  default:
+    values:
+    - default.yaml
+  dev:
+    values:
+    - dev.yaml
   
 ---
 repositories:
@@ -20,7 +25,7 @@ releases:
     chart: ../../charts/secrets
     inherit:
     - template: default
-  - name: cityos
+  - name: cityos-{{ .Values.releaseName }}
     chart: ../../charts/cityos
     inherit:
     - template: default
