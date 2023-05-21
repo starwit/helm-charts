@@ -19,7 +19,7 @@ repositories:
 
 templates:
   default:
-    namespace: cityos
+    namespace: timescale
     createNamespace: true
     values:
     - ../values.secrets.yaml
@@ -37,23 +37,10 @@ releases:
     chart: ../../charts/timescaledb-single
     needs:
     - secrets
-    values:
-    - values/timescale-values.yaml
-    namespace: cityos
-    createNamespace: true
-  - name: cityos-{{ .Values.releaseName }}
-    chart: ../../charts/cityos
     inherit:
     - template: default
-    needs:
-    - secrets
     values:
-      - imagePullSecrets:
-        - name: ghcr-starwit
-  - name: traffic
-    chart: ../../charts/traffic
-    values:
-    - values/traffic-values.yaml
+    - values/timescale-values.yaml
 
 
 

@@ -1,0 +1,137 @@
+autoscaling:
+  enabled: false
+fullnameOverride: ""
+global:
+  keycloak:
+    authServerUrl: http://cityos-keycloak-http/cityos-auth
+    realm: citydashboard
+    resource: citydashboard
+
+image:
+  repository: ghcr.io/chtew/hackathon-digiweek-wob
+  tag: "v2.2.2-1"
+  pullPolicy: Always
+
+imagePullSecrets:
+  - name: citydockerreg
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 8081
+
+serviceAccount:
+  create: false
+autoscaling:
+  enabled: false
+
+initContainers:
+  wait4postgres:
+    image: busybox
+    tag: latest
+  curl:
+    image: curlimages/curl
+    tag: latest
+
+# add extra environment params to app server
+extraEnv: |
+  - name: KEYCLOAK_REALM
+    value: 'citydashboard'
+  - name: KEYCLOAK_RESOURCE
+    value: 'citydashboard'
+  - name: SPRING_PROFILES_ACTIVE
+    value: prod
+# adapt if other ingress controller as traefik is used.
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: traefik
+#    cert-manager.io/cluster-issuer: "letsencrypt-prod"  
+  hosts:
+    - host: localhost
+
+  startupScripts:
+    # cli script that reconfigures WildFly
+    contextPath.cli: |
+      embed-server --server-config=standalone-ha.xml --std-out=echo
+      batch
+      {{- if ne .Values.contextPath "auth" }}
+      /subsystem=keycloak-server/:write-attribute(name=web-context,value={{ if eq .Values.contextPath "" }}/{{ else }}{{ .Values.contextPath }}{{ end }})
+      {{- if eq .Values.contextPath "" }}
+      /subsystem=undertow/server=default-server/host=default-host:write-attribute(name=default-web-module,value=keycloak-server.war)
+      {{- end }}
+      {{- end }}
+      run-batch
+      stop-embedded-server
+
+postgresql:
+  auth:
+    postgresPassword: root
+    database: hackathon
+    username: hackathon
+    password: hackathon
+  primary:
+    service:
+      ports:
+        postgresql: 5432
+
+grafana:
+  rbac:
+    pspEnabled: false
+  ingress:
+    enabled: true
+    hosts:
+      - "localhost"
+    path: "/grafana"
+  imagerenderer:
+    enabled: true
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: hackathon-db
+        type: postgresql
+        uid: "DUcTla6nk"
+        url: "{{ tpl .Release.Name . }}-postgres:5432"
+        user: hackathon
+        database: hackathon
+        secureJsonData:
+          password: hackathon
+        editable: true
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'hackathon'
+          folder: ''
+          type: file
+          disableDeletion: true
+          updateIntervalSeconds: 10
+          # <bool> allow updating provisioned dashboards from the UI
+          allowUiUpdates: true
+          options:
+            path: /var/lib/grafana/dashboards/ds1
+            foldersFromFilesStructure: true
+  dashboardsConfigMaps:
+    ds1: "traffic-ds"
+  env:
+    GF_AUTH_ANONYMOUS_ENABLED: "false"
+    GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+    GF_AUTH_BASIC_ENABLED: "false"
+    GF_AUTH_DISABLE_LOGIN_FORM: "true"
+    GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP: "true"
+    GF_AUTH_GENERIC_OAUTH_API_URL: http://localhost/cityos-auth/realms/citydashboard/protocol/openid-connect/userinfo
+    GF_AUTH_GENERIC_OAUTH_AUTH_URL: http://localhost/cityos-auth/realms/citydashboard/protocol/openid-connect/auth
+    GF_AUTH_GENERIC_OAUTH_CLIENT_ID: citydashboard
+    GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
+    GF_AUTH_GENERIC_OAUTH_NAME: OAuth
+    GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH: Viewer
+    GF_AUTH_GENERIC_OAUTH_SCOPES: openid profile email
+    GF_AUTH_GENERIC_OAUTH_TOKEN_URL: http://localhost/cityos-auth/realms/citydashboard/protocol/openid-connect/token
+    GF_SECURITY_ADMIN_PASSWORD: adminadmin
+    GF_SECURITY_ADMIN_USER: adminadmin
+    GF_SECURITY_ALLOW_EMBEDDING: "true"
+    GF_SERVER_DOMAIN: localhost
+    GF_SERVER_ROOT_URL: http://localhost/grafana/
+    GF_SERVER_SERVE_FROM_SUB_PATH: true
