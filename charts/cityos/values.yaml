@@ -227,11 +227,11 @@ keycloak:
       username: auth
       password: auth
       database: keycloak
+  httpRelativePath: "/cityos-auth/auth/"
   ingress:
     enabled: true
     hostname: localhost
-    # TODO: path is not correct. Might need use-forwarded-headers with forwarded-for-header: "X-Forwarded-For"
-    path: "/"
+    path: "/cityos-auth/auth/"
     annotations:
       kubernetes.io/ingress.class: "traefik"
 
