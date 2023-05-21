@@ -71,6 +71,7 @@ mariadb:
     username: citydashboard
     password: yourpassword
 
+# Todo: Attach to a centralized IDP on Production (and use this for develop)
 keycloak:
   auth:
     adminUser: admin
