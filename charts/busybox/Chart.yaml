@@ -2,3 +2,7 @@ apiVersion: v2
 name: busybox
 description: A Helm chart for Artemis
 version: 0.0.0
+
+maintainers:
+  - name: starwit
+    email: info@starwit.de
