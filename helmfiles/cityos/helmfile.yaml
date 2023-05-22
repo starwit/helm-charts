@@ -3,7 +3,6 @@ bases:
   - ../bases/environments.yaml
   - ../bases/templates.yaml
   
----
 repositories:
 - name: codecentric
   url: https://codecentric.github.io/helm-charts
@@ -49,8 +48,4 @@ releases:
       - values/traffic-values.yaml
       - imagePullSecrets:
         - name: ghcr-starwit
-
-
-
-#-{{ .Values.releaseName }}
 
