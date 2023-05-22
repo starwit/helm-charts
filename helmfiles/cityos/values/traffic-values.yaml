@@ -66,15 +66,12 @@ ingress:
       stop-embedded-server
 
 postgresql:
+  serviceurl: timescale-timescaledb
+  serviceport: 5432
   auth:
-    postgresPassword: root
     database: hackathon
     username: hackathon
     password: hackathon
-  primary:
-    service:
-      ports:
-        postgresql: 5432
 
 grafana:
   rbac:

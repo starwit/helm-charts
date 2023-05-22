@@ -1,0 +1,7 @@
+templates:
+  defaultns:
+    namespace: cityos
+    createNamespace: true
+  dockerregistry:
+    values:
+      - ../values.secrets.yaml

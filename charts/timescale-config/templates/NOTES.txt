@@ -1,0 +1,1 @@
+Creation of database schemas in timescaleDB via configMaps.

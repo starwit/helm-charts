@@ -1,6 +1,0 @@
-
-global:
-  credentials:
-    ghcrStarwit:
-      user: testuser
-      password: testpassword

@@ -1,7 +1,7 @@
 # This file and its contents are licensed under the Apache License 2.0.
 # Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 
-replicaCount: 3
+replicaCount: 1
 fullnameOverride: "{{ .Release.Name }}-timescaledb"
 # This configuration will be passed on to Patroni directly, there are a few things that are
 # injected/changed, these are:

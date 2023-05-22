@@ -1,6 +1,0 @@
-dependencies:
-- name: cityos
-  repository: file://../cityos
-  version: 1.1.7
-digest: sha256:0d5e8dfdbe9aa8c66f4cb987a2d3906313df2201b827b7c78d689a0d42bcdb3a
-generated: "2023-04-12T16:46:35.123711049+02:00"

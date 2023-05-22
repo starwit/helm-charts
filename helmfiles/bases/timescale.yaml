@@ -1,0 +1,25 @@
+repositories:
+- name: timescale
+  url: https://charts.timescale.com
+
+releases:
+  - name: pgadmin4
+    chart: runix/pgadmin4
+    inherit:
+      - template: defaultns
+    values:
+      - values/pgadmin4-values.yaml
+
+  - name: timescale-config
+    chart: ../../charts/timescale-config
+    inherit:
+      - template: defaultns
+
+  - name: timescale
+    chart: timescale/timescaledb-single
+    values:
+      - values/timescale-values.yaml
+    inherit:
+      - template: defaultns
+    needs:
+      - timescale-config

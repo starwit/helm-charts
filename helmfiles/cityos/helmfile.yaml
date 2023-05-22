@@ -1,10 +1,7 @@
-environments: 
-  default:
-    values:
-    - default.yaml
-  dev:
-    values:
-    - dev.yaml
+bases:
+  - ../bases/timescale.yaml
+  - ../bases/environments.yaml
+  - ../bases/templates.yaml
   
 ---
 repositories:
@@ -17,43 +14,43 @@ repositories:
 - name: grafana
   url: https://grafana.github.io/helm-charts
 
-templates:
-  default:
-    namespace: cityos
-    createNamespace: true
-    values:
-    - ../values.secrets.yaml
-
 releases:
-  - name: pgadmin4
-    chart: runix/pgadmin4
-    values:
-    - values/pgadmin4-values.yaml
+
+  - name: busybox
+    chart: ../../charts/busybox
+    inherit:
+      - template: defaultns
+
   - name: secrets
     chart: ../../charts/secrets
     inherit:
-    - template: default
-  - name: timescale
-    chart: ../../charts/timescaledb-single
-    needs:
-    - secrets
-    values:
-    - values/timescale-values.yaml
-    namespace: cityos
-    createNamespace: true
-  - name: cityos-{{ .Values.releaseName }}
+      - template: defaultns
+      - template: dockerregistry
+
+  - name: cityos
     chart: ../../charts/cityos
     inherit:
-    - template: default
+      - template: defaultns
+      - template: dockerregistry
     needs:
-    - secrets
+      - secrets
     values:
       - imagePullSecrets:
-        - name: ghcr-starwit
+          - name: ghcr-starwit
+
   - name: traffic
     chart: ../../charts/traffic
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
     values:
-    - values/traffic-values.yaml
+      - values/traffic-values.yaml
+      - imagePullSecrets:
+        - name: ghcr-starwit
 
 
+
+#-{{ .Values.releaseName }}
 
