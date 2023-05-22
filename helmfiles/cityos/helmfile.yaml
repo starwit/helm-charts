@@ -3,14 +3,9 @@ bases:
   - ../bases/environments.yaml
   - ../bases/templates.yaml
   
----
 repositories:
-- name: codecentric
-  url: https://codecentric.github.io/helm-charts
 - name: bitnami
   url: https://charts.bitnami.com/bitnami
-- name: runix
-  url: https://helm.runix.net
 - name: grafana
   url: https://grafana.github.io/helm-charts
 
@@ -38,17 +33,17 @@ releases:
       - imagePullSecrets:
           - name: ghcr-starwit
 
-  - name: traffic
-    chart: ../../charts/traffic
-    inherit:
-      - template: defaultns
-      - template: dockerregistry
-    needs:
-      - secrets
-    values:
-      - values/traffic-values.yaml
-      - imagePullSecrets:
-        - name: ghcr-starwit
+  #- name: traffic
+  #  chart: ../../charts/traffic
+  #  inherit:
+  #    - template: defaultns
+  #    - template: dockerregistry
+  #  needs:
+  #    - secrets
+  #  values:
+  #    - values/traffic-values.yaml
+  #    - imagePullSecrets:
+  #      - name: ghcr-starwit
 
 
 

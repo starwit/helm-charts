@@ -1,6 +1,6 @@
 apiVersion: v2
 name: busybox
-description: A Helm chart for Artemis
+description: A Helm chart for testing
 version: 0.0.0
 
 maintainers:

@@ -1,4 +1,6 @@
 repositories:
+- name: runix
+  url: https://helm.runix.net
 - name: timescale
   url: https://charts.timescale.com
 
