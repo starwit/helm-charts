@@ -1,6 +1,38 @@
 apiVersion: v1
 entries:
+  busybox:
+  - apiVersion: v2
+    created: "2023-05-24T14:10:22.301268066Z"
+    description: A Helm chart for Artemis
+    digest: 31988b1123653d894c0af538a747d0ffdfa3aba2131f14731a5d2a9fdc8f2d95
+    maintainers:
+    - email: info@starwit.de
+      name: starwit
+    name: busybox
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/busybox-0.0.0/busybox-0.0.0.tgz
+    version: 0.0.0
   cityos:
+  - apiVersion: v2
+    appVersion: v1.1.1-10
+    created: "2023-05-24T14:10:22.593961596Z"
+    dependencies:
+    - name: keycloak
+      repository: https://codecentric.github.io/helm-charts
+      version: 18.1.1
+    - name: mariadb
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.0.13
+    description: A Helm chart for cityos
+    digest: 2efec06fce5bd1086d02f16e75c09a80e4eaec0f6c2c0b6ff9b053bc1daf5f2b
+    maintainers:
+    - email: info@starwit.de
+      name: starwit
+    name: cityos
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/cityos-1.1.8/cityos-1.1.8.tgz
+    version: 1.1.8
   - apiVersion: v2
     appVersion: v1.1.7
     created: "2023-04-04T18:22:21.657373859Z"
@@ -173,6 +205,20 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/cityos-landing-0.1.4/cityos-landing-0.1.4.tgz
     version: 0.1.4
+  secrets:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-05-24T14:10:22.849346583Z"
+    description: A Helm chart for global Kubernetes secrets
+    digest: d7ca531edfca3a5175917f031970752868eeb66178aea6b168a76cb9329b1429
+    maintainers:
+    - email: info@starwit.de
+      name: starwit
+    name: secrets
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/secrets-0.1.0/secrets-0.1.0.tgz
+    version: 0.1.0
   starwit-accounts-internal:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -190,6 +236,20 @@ entries:
     type: application
     urls:
     - https://github.com/starwit/helm-charts/releases/download/starwit-accounts-internal-0.1.0/starwit-accounts-internal-0.1.0.tgz
+    version: 0.1.0
+  timescale-config:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-05-24T14:10:23.076935962Z"
+    description: A Helm chart for Kubernetes
+    digest: 02538285e91ba4ae1bd83d77cdc429b00faf7ad73c39416319821e0e0924ecce
+    maintainers:
+    - email: info@starwit.de
+      name: starwit
+    name: timescale-config
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/timescale-config-0.1.0/timescale-config-0.1.0.tgz
     version: 0.1.0
   timescaledb-single:
   - apiVersion: v1
@@ -277,6 +337,20 @@ entries:
     version: 2.2.3
   - apiVersion: v2
     appVersion: v2.2.3-2
+    created: "2023-05-24T14:10:23.32504572Z"
+    dependencies:
+    - name: grafana
+      repository: https://grafana.github.io/helm-charts
+      version: 6.32.11
+    description: A Helm chart for traffic analyser
+    digest: 16c0d4926bb99bf70517320125db909568370a22ef30b8b1e7b331f33c154356
+    name: traffic
+    type: application
+    urls:
+    - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.3-4/traffic-2.2.3-4.tgz
+    version: 2.2.3-4
+  - apiVersion: v2
+    appVersion: v2.2.3-2
     created: "2023-04-11T09:06:53.377820931Z"
     dependencies:
     - name: postgresql
@@ -343,4 +417,4 @@ entries:
     urls:
     - https://github.com/starwit/helm-charts/releases/download/traffic-2.2.1/traffic-2.2.1.tgz
     version: 2.2.1
-generated: "2023-05-11T11:16:50.315052658Z"
+generated: "2023-05-24T14:10:23.32512642Z"
