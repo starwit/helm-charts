@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "cityos.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "cityos.selectorLabels" . | nindent 6 }}
@@ -29,7 +27,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
         - name: wait4mariadb
-          image: "{{ .Values.initContainers.wait4mariadb.image }}:{{ .Values.initContainers.wait4mariadb.tag }}"
+          image: "busybox:latest"
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
           securityContext:
@@ -57,23 +55,23 @@ spec:
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: /{{ include "cityos.fullname" . }}
             - name: KEYCLOAK_AUTH-SERVER-URL
-              value: {{ .Values.global.keycloak.authServerUrl }}
+              value: http://{{ .Release.Name }}-keycloak-http/{{ .Values.keycloak.contextPath }}
             - name: SERVER_USE_FORWARD_HEADERS 
               value: "true"
             - name: SERVER_FORWARD_HEADERS_STRATEGY
               value: FRAMEWORK
             - name: ENDPOINT_TRAFFIC
-              value: {{ .Values.service.endpoint.traffic }}
+              value: {{ .Values.endpoints.traffic }}
             - name: ENDPOINT_GRAFANA
-              value: {{ .Values.service.endpoint.grafana }}
+              value: {{ .Values.endpoints.grafana }}
             - name: ENDPOINT_AUTH_ENABLE
-              value: "{{ .Values.service.endpoint.auth.enable }}"
+              value: "{{ .Values.endpointAuth.enabled }}"
             {{- with .Values.extraEnv }}
             {{- tpl . $ | nindent 12 }}
             {{- end }}              
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: 8081
               protocol: TCP
           livenessProbe:
             httpGet:
