@@ -1,3 +1,6 @@
+# https://brianturchyn.net/traefik-forwardauth-support-with-keycloak/
+# https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
+# https://github.com/thomseddon/traefik-forward-auth
 {{- if .Values.ingress.enabled -}}
   {{- $fullName := include "cityos-frontend.fullname" . -}}
   {{- $svcPort := .Values.service.port -}}
