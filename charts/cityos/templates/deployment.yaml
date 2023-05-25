@@ -44,11 +44,15 @@ spec:
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: /{{ include "cityos.fullname" . }}
             - name: KEYCLOAK_AUTH-SERVER-URL
-              value: http://{{ .Release.Name }}-keycloak-http/{{ .Values.keycloak.contextPath }}
+              value: {{ .Values.global.keycloak.authServerUrl }}
             - name: SERVER_USE_FORWARD_HEADERS 
               value: "true"
             - name: SERVER_FORWARD_HEADERS_STRATEGY
               value: FRAMEWORK
+            - name: KEYCLOAK_REALM
+              value: {{ .Values.global.keycloak.realm }}
+            - name: KEYCLOAK_RESOURCE
+              value: {{ .Values.global.keycloak.resource }}
             - name: ENDPOINT_TRAFFIC
               value: {{ .Values.endpoints.traffic }}
             - name: ENDPOINT_GRAFANA

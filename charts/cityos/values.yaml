@@ -1,4 +1,9 @@
 replicaCount: 1
+global:
+  keycloak:
+    authServerUrl: http://cityos-keycloak-http/cityos-auth
+    realm: citydashboard
+    resource: citydashboard
 
 image:
   repository: ghcr.io/starwit/city-demos/backend

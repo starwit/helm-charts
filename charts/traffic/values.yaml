@@ -1,6 +1,4 @@
-autoscaling:
-  enabled: false
-fullnameOverride: ""
+replicaCount: 1
 global:
   keycloak:
     authServerUrl: http://cityos-keycloak-http/cityos-auth
@@ -23,8 +21,6 @@ service:
 
 serviceAccount:
   create: false
-autoscaling:
-  enabled: false
 
 initContainers:
   wait4postgres:
@@ -36,21 +32,13 @@ initContainers:
 
 # add extra environment params to app server
 extraEnv: |
-  - name: KEYCLOAK_REALM
-    value: 'citydashboard'
-  - name: KEYCLOAK_RESOURCE
-    value: 'citydashboard'
   - name: SPRING_PROFILES_ACTIVE
     value: prod
 # adapt if other ingress controller as traefik is used.
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: traefik
-#    cert-manager.io/cluster-issuer: "letsencrypt-prod"  
   hosts:
     - host: localhost
-
   startupScripts:
     # cli script that reconfigures WildFly
     contextPath.cli: |
