@@ -1,4 +1,6 @@
 replicaCount: 1
+autoscaling:
+  enabled: false
 global:
   keycloak:
     authServerUrl: http://cityos-keycloak-http/cityos-auth
