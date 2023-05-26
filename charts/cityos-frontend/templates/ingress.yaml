@@ -18,6 +18,8 @@ metadata:
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+    - traefik.ingress.kubernetes.io/router.middlewares: ingress-traefik-secureheaders@kubernetescrd
+
 spec:
   {{- if .Values.ingress.tls }}
   tls:
