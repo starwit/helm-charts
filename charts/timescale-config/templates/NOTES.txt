@@ -1,1 +1,3 @@
 Creation of database schemas in timescaleDB via configMaps.
+
+Use base64 -d command to encode custom-secret-scripts.yaml.
