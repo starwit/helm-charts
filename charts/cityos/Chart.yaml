@@ -15,20 +15,17 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.1.8
+version: 1.1.10
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: "v1.1.1-13"
+appVersion: "develop_v2"
 
 dependencies:
   - name: keycloak
     version: 18.1.1
     repository: https://codecentric.github.io/helm-charts
-  - name: mariadb
-    version: 11.0.13
-    repository: https://charts.bitnami.com/bitnami
 
 maintainers:
   - name: starwit

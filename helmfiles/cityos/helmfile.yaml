@@ -67,7 +67,6 @@ releases:
     needs:
       - secrets
     values:
-      - values/traffic-values.yaml
       - imagePullSecrets:
         - name: ghcr-starwit
 

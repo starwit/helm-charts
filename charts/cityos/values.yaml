@@ -1,4 +1,9 @@
 replicaCount: 1
+global:
+  keycloak:
+    authServerUrl: http://cityos-keycloak-http/cityos-auth
+    realm: citydashboard
+    resource: citydashboard
 
 image:
   repository: ghcr.io/starwit/city-demos/backend
@@ -45,12 +50,13 @@ ingress:
 #      hosts:
 #        - localhost
 
-mariadb:
+postgresql:
+  serviceurl: timescale-timescaledb
+  serviceport: 5432
   auth:
-    rootPassword: root
     database: citydashboard
     username: citydashboard
-    password: yourpassword
+    password: citydashboard
 
 keycloak:
   contextPath: cityos-auth
