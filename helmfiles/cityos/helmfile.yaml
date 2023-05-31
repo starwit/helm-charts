@@ -37,6 +37,28 @@ releases:
       - imagePullSecrets:
           - name: ghcr-starwit
 
+  - name: cityos-frontend
+    chart: ../../charts/cityos-frontend
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - imagePullSecrets:
+          - name: ghcr-starwit
+
+  - name: cityos-landing
+    chart: ../../charts/cityos-landing
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - imagePullSecrets:
+          - name: ghcr-starwit
+
   - name: traffic
     chart: ../../charts/traffic
     inherit:
