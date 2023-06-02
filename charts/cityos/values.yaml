@@ -12,7 +12,7 @@ image:
 imagePullSecrets:
   - name: citydockerreg
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "cityos-api"
 
 initContainers:
   resources: {}
@@ -45,6 +45,7 @@ ingress:
   enabled: true
   hosts:
     - host: localhost
+      pathType: Prefix
 #  tls:
 #    - secretName: host-tls
 #      hosts:

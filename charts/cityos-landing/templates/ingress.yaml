@@ -11,8 +11,9 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "cityos-landing.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+  #    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-landing-strip-prefix@kubernetescrd
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -31,12 +32,14 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-          - path: /landing
-            pathType: Prefix
+        {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
             backend:
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
+        {{- end }}
     {{- end }}
   {{- end }}
