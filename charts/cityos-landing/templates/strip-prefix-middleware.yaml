@@ -1,15 +1,16 @@
 # TODO: Remove on / path
-#apiVersion: traefik.io/v1alpha1
-#kind: Middleware
-#metadata:
-#  name: strip-prefix-landing
-#  # No namespace defined
-#spec:
-#  stripPrefixRegex:
-#    forceSlash: false
-#    prefixes:
-#      {{- range .Values.ingress.hosts }}
-#      {{- range .paths }}
-#      - {{ .path }}
-  #      {{- end}}
-  #      {{- end}}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: landing-strip-prefix
+  namespace: {{ .Release.Namespace }}
+  # No namespace defined
+spec:
+  stripPrefixRegex:
+    forceSlash: false
+    prefixes:
+      {{- range .Values.ingress.hosts }}
+      {{- range .paths }}
+      - {{ .path }}
+      {{- end}}
+      {{- end}}
