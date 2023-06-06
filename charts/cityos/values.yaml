@@ -25,8 +25,8 @@ endpointAuth:
 
 # add extra environment params to app server
 extraEnv: |
-    - name: VW2_CLIENTID
-      value: clientid
+  - name: VW2_CLIENTID
+    value: clientid
   - name: VW2_CLIENT_SECRET
     value: secret
   - name: VW2_DATACAPTURERSTATUS
@@ -38,8 +38,9 @@ extraEnv: |
   - name: VW2_CAMERASERVICEURL
     value: https://carmel2.vw2-demospace.de/carmel-smart-cities-cameraservice/v1/cameras
   - name: CITYOS_AUTHENTICATION_URI
-    value: http://localhost/cityos-auth/realms/citydashboard
-
+    value: http://cityos-keycloak-http/cityos-auth/realms/citydashboard
+  - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+    value: DEBUG
 serviceAccount:
   create: false
 
