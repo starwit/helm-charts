@@ -41,6 +41,10 @@ extraEnv: |
 serviceAccount:
   create: false
 
+traefik:
+  middleware:
+    stripprefix: false
+
 ingress:
   enabled: true
   hosts:
