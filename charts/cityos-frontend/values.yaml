@@ -41,6 +41,10 @@ service:
   type: ClusterIP
   port: 80
 
+traefik:
+  middleware:
+    stripprefix: true
+
 ingress:
   enabled: true
   className: ""
