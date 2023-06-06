@@ -1,12 +1,13 @@
-apiVersion: traefik.io/v1alpha1
+# TODO: Remove on / path
+apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: frontend-strip-prefix
+  name: {{ .Release.Name }}-strip-prefix
   namespace: {{ .Release.Namespace }}
   # No namespace defined
 spec:
-  stripPrefixRegex:
-    forceSlash: true
+  stripPrefix:
+    forceSlash: false
     prefixes:
       {{- range .Values.ingress.hosts }}
       {{- range .paths }}

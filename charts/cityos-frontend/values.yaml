@@ -82,8 +82,8 @@ affinity: {}
 
 frontend:
   api:
-    baseUrl: http://localhost:8081/cityos-api/
+    baseUrl: http://localhost/cityos-api/
   auth:
-    authority: http://localhost/cityos-auth/auth/realms/citydashboard
+    authority: http://localhost/cityos-auth/realms/citydashboard
     clientId: citydashboard
   publicEnv: []

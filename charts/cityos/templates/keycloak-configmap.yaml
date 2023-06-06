@@ -55,27 +55,27 @@ data:
             {
             "clientId": "citydashboard",
             "name": "citydashboard",
-            "rootUrl": "",
-            "baseUrl": "",
-            "surrogateAuthRequired": false,
-            "enabled": true,
-            "alwaysDisplayInConsole": false,
-            "clientAuthenticatorType": "client-secret",
-            "redirectUris": [
+              "rootUrl": "",
+              "baseUrl": "",
+              "surrogateAuthRequired": false,
+              "enabled": true,
+              "alwaysDisplayInConsole": false,
+              "clientAuthenticatorType": "client-secret",
+              "redirectUris": [
                 "*"
-            ],
-            "webOrigins": [
-                "+"
-            ],
-            "notBefore": 0,
-            "bearerOnly": false,
-            "consentRequired": false,
-            "standardFlowEnabled": true,
-            "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
-            "serviceAccountsEnabled": false,
-            "publicClient": true,
-            "frontchannelLogout": false,
+              ],
+              "webOrigins": [
+                "*"
+              ],
+              "notBefore": 0,
+              "bearerOnly": false,
+              "consentRequired": false,
+              "standardFlowEnabled": true,
+              "implicitFlowEnabled": false,
+              "directAccessGrantsEnabled": false,
+              "serviceAccountsEnabled": false,
+              "publicClient": true,
+              "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
                 "id.token.as.detached.signature": "false",

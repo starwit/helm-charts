@@ -83,5 +83,5 @@ tolerations: []
 affinity: {}
 
 landing:
-  loginUrl: http://localhost/cityos
+  loginUrl: http://localhost/cityos/
   publicEnv: []
