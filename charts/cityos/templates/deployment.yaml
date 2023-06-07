@@ -61,7 +61,7 @@ spec:
               value: "{{ .Values.endpointAuth.enabled }}"
             {{- with .Values.extraEnv }}
             {{- tpl . $ | nindent 12 }}
-            {{- end }}              
+            {{- end }}
           ports:
             - name: http
               containerPort: 8081
