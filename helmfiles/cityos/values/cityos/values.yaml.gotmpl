@@ -9,14 +9,14 @@ endpoints:
 ingress:
   enabled: true
   hosts:
-    - host: { { requiredEnv "HOSTNAME" } }
+    - host: {{ requiredEnv "HOSTNAME" }}
       paths:
         - pathType: Prefix
 
 keycloak:
   ingress:
     rules:
-      - host: { { requiredEnv "HOSTNAME" } }
+      - host: {{ requiredEnv "HOSTNAME" }}
         paths:
           - path: /cityos-auth
             pathType: Prefix

@@ -3,7 +3,7 @@ landing:
 
 ingress:
   hosts:
-    - host: { { requiredEnv "HOSTNAME" } }
+    - host: {{ requiredEnv "HOSTNAME" }}
       paths:
         - path: /landing/
           pathType: Prefix

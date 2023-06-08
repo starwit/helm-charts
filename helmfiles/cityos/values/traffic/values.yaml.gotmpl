@@ -4,12 +4,12 @@ global:
 
 ingress:
   hosts:
-    - host: { { requiredEnv "HOSTNAME" } }
+    - host: {{ requiredEnv "HOSTNAME" }}
 
 grafana:
   ingress:
     hosts:
-      - { { requiredEnv "HOSTNAME" } }
+      - {{ requiredEnv "HOSTNAME" }}
   env:
     GF_AUTH_GENERIC_OAUTH_API_URL: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard/protocol/openid-connect/userinfo
     GF_AUTH_GENERIC_OAUTH_AUTH_URL: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard/protocol/openid-connect/auth
