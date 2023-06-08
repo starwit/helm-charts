@@ -1,0 +1,17 @@
+global:
+  keycloak:
+    authServerUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/
+
+ingress:
+  hosts:
+    - host: { { requiredEnv "HOSTNAME" } }
+
+grafana:
+  ingress:
+    hosts:
+      - { { requiredEnv "HOSTNAME" } }
+  env:
+    GF_AUTH_GENERIC_OAUTH_API_URL: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard/protocol/openid-connect/userinfo
+    GF_AUTH_GENERIC_OAUTH_AUTH_URL: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard/protocol/openid-connect/auth
+    GF_AUTH_GENERIC_OAUTH_TOKEN_URL: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard/protocol/openid-connect/token
+    GF_SERVER_ROOT_URL: http://{{ requiredEnv "HOSTNAME" }}/grafana/

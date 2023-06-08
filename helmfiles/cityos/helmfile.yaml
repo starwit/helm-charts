@@ -34,6 +34,7 @@ releases:
     needs:
       - secrets
     values:
+      - ./values/cityos/values.yaml.gotmpl
       - imagePullSecrets:
           - name: ghcr-starwit
 
@@ -45,6 +46,7 @@ releases:
     needs:
       - secrets
     values:
+      - ./values/cityos-frontend/values.yaml.gotmpl
       - imagePullSecrets:
           - name: ghcr-starwit
 
@@ -56,6 +58,7 @@ releases:
     needs:
       - secrets
     values:
+      - ./values/cityos-landing/values.yaml.gotmpl
       - imagePullSecrets:
           - name: ghcr-starwit
 
@@ -67,6 +70,7 @@ releases:
     needs:
       - secrets
     values:
+      - ./values/traffic/values.yaml.gotmpl
       - imagePullSecrets:
         - name: ghcr-starwit
 

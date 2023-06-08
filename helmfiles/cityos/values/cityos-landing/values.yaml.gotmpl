@@ -1,0 +1,9 @@
+landing:
+  loginUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos/
+
+ingress:
+  hosts:
+    - host: { { requiredEnv "HOSTNAME" } }
+      paths:
+        - path: /landing/
+          pathType: Prefix

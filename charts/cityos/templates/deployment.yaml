@@ -32,7 +32,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:          
+          env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
             - name: SPRING_DATASOURCE_URL
@@ -59,6 +59,8 @@ spec:
               value: {{ .Values.endpoints.grafana }}
             - name: ENDPOINT_AUTH_ENABLE
               value: "{{ .Values.endpointAuth.enabled }}"
+            - name: CITYOS_AUTHENTICATION_URI
+              value: {{ .Values.cityos.auth.issuerUrl }}
             {{- with .Values.extraEnv }}
             {{- tpl . $ | nindent 12 }}
             {{- end }}

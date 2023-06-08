@@ -1,2 +1,3 @@
 values.secrets.yaml
 **/helmfile.lock
+/helmfiles/cityos/.env

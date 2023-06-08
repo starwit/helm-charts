@@ -1,0 +1,14 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: { { requiredEnv "HOSTNAME" } }
+      paths:
+        - path: /cityos
+          pathType: Prefix
+
+frontend:
+  api:
+    baseUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos-cityos-api/
+  auth:
+    authority: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
+    clientId: citydashboard
