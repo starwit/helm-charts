@@ -228,6 +228,6 @@ keycloak:
   ingress:
     enabled: true
     hostname: localhost
-    path: "/cityos-auth/"
+    path: "/cityos-auth"
     annotations:
       kubernetes.io/ingress.class: "traefik"
