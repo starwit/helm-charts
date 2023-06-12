@@ -1,0 +1,76 @@
+bases:
+  - ../bases/timescale.yaml
+  - ../bases/environments.yaml
+  - ../bases/templates.yaml
+  
+repositories:
+- name: codecentric
+  url: https://codecentric.github.io/helm-charts
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+- name: runix
+  url: https://helm.runix.net
+- name: grafana
+  url: https://grafana.github.io/helm-charts
+
+releases:
+
+  - name: busybox
+    chart: ../../charts/busybox
+    inherit:
+      - template: defaultns
+
+  - name: secrets
+    chart: ../../charts/secrets
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+
+  - name: cityos
+    chart: ../../charts/cityos
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - ./values/cityos/values.yaml.gotmpl
+      - imagePullSecrets:
+          - name: ghcr-starwit
+
+  - name: cityos-frontend
+    chart: ../../charts/cityos-frontend
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - ./values/cityos-frontend/values.yaml.gotmpl
+      - imagePullSecrets:
+          - name: ghcr-starwit
+
+  - name: cityos-landing
+    chart: ../../charts/cityos-landing
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - ./values/cityos-landing/values.yaml.gotmpl
+      - imagePullSecrets:
+          - name: ghcr-starwit
+
+  - name: traffic
+    chart: ../../charts/traffic
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - ./values/traffic/values.yaml.gotmpl
+      - imagePullSecrets:
+        - name: ghcr-starwit
+

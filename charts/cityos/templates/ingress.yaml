@@ -1,18 +1,16 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "cityos.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
     {{- include "cityos.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+  {{- if .Values.traefik.middleware.stripprefix }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-prefix@kubernetescrd
+  {{- end }}
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -31,12 +29,14 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
+          {{- range .paths }}
           - path: /{{ $fullName }}
-            pathType: Prefix
+            pathType: {{ .pathType }}
             backend:
               service:
                 name: {{ $fullName }}
-                port: 
-                  number: {{ $svcPort }}
+                port:
+                  number: 80
+          {{- end }}
     {{- end }}
   {{- end }}

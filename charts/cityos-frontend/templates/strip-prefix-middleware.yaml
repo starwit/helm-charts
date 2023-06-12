@@ -1,0 +1,16 @@
+# TODO: Remove on / path
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}-strip-prefix
+  namespace: {{ .Release.Namespace }}
+  # No namespace defined
+spec:
+  stripPrefix:
+    forceSlash: false
+    prefixes:
+      {{- range .Values.ingress.hosts }}
+      {{- range .paths }}
+      - {{ .path }}
+      {{- end}}
+      {{- end}}

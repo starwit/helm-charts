@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+  - image: radial/busyboxplus:curl
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+    name: busybox
+  #   volumeMounts:
+  #   - mountPath: /
+  #     name: logging-peristent-volume
+  # volumes:
+  #   - name: logging-peristent-volume
+  #     persistentVolumeClaim:
+  #       claimName: logging-volume-claim
+  restartPolicy: Always

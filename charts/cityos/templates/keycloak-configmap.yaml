@@ -1,91 +1,9 @@
-global:
-  keycloak:
-    authServerUrl: http://cityos-keycloak-http/cityos-auth
-
-replicaCount: 1
-
-image:
-  repository: ghcr.io/starwit/city-demos
-  pullPolicy: Always
-
-imagePullSecrets:
-  - name: citydockerreg
-nameOverride: ""
-fullnameOverride: ""
-
-initContainers:
-  resources: { }
-
-endpoints:
-  traffic: http://localhost/traffic/api
-  grafana: http://localhost/grafana
-endpointAuth:
-  enabled: true
-
-cityos:
-  auth:
-    issuerUrl: http://localhost/cityos-auth/realms/citydashboard
-
-# add extra environment params to app server
-extraEnv: |
-  - name: VW2_CLIENTID
-    value: clientid
-  - name: VW2_CLIENT_SECRET
-    value: secret
-  - name: VW2_DATACAPTURERSTATUS
-    value: https://carmel.vw2-demospace.de/vw2datacapture/api/datapoint
-  - name: VW2_DATACAPTURERCAMURL
-    value: https://carmel.vw2-demospace.de/vw2datacapture/api/cameras
-  - name: VW2_AUTHURL
-    value: https://carmel2.vw2-demospace.de/carmel-smart-cities-auth/realms/icv/protocol/openid-connect/token
-  - name: VW2_CAMERASERVICEURL
-    value: https://carmel2.vw2-demospace.de/carmel-smart-cities-cameraservice/v1/cameras
-#  - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
-#    value: DEBUG
-serviceAccount:
-  create: false
-
-traefik:
-  middleware:
-    stripprefix: false
-
-ingress:
-  enabled: true
-  hosts:
-    - host: localhost
-      paths:
-        - pathType: Prefix
-#  tls:
-#    - secretName: host-tls
-#      hosts:
-#        - localhost
-
-postgresql:
-  serviceurl: timescale-timescaledb
-  serviceport: 5432
-  auth:
-    database: citydashboard
-    username: citydashboard
-    password: citydashboard
-
-keycloak:
-  auth:
-    adminUser: admin
-    adminPassword: yourpassword
-  production: true
-  proxy: edge
-
-  keycloakConfigCli:
-    enabled: true
-    command:
-      - java
-      - -jar
-      - /app/keycloak-config-cli.jar
-    image:
-      repository: adorsys/keycloak-config-cli
-      tag: latest
-    configuration:
-      realm.json: |-
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: {{ .Release.Name }}-realm-json
+data:
+    realm.json: |-
         {
         "id": "citydashboard",
         "realm": "citydashboard",
@@ -137,27 +55,27 @@ keycloak:
             {
             "clientId": "citydashboard",
             "name": "citydashboard",
-            "rootUrl": "",
-            "baseUrl": "",
-            "surrogateAuthRequired": false,
-            "enabled": true,
-            "alwaysDisplayInConsole": false,
-            "clientAuthenticatorType": "client-secret",
-            "redirectUris": [
+              "rootUrl": "",
+              "baseUrl": "",
+              "surrogateAuthRequired": false,
+              "enabled": true,
+              "alwaysDisplayInConsole": false,
+              "clientAuthenticatorType": "client-secret",
+              "redirectUris": [
                 "*"
-            ],
-            "webOrigins": [
+              ],
+              "webOrigins": [
                 "*"
-            ],
-            "notBefore": 0,
-            "bearerOnly": false,
-            "consentRequired": false,
-            "standardFlowEnabled": true,
-            "implicitFlowEnabled": false,
-            "directAccessGrantsEnabled": false,
-            "serviceAccountsEnabled": false,
-            "publicClient": true,
-            "frontchannelLogout": false,
+              ],
+              "notBefore": 0,
+              "bearerOnly": false,
+              "consentRequired": false,
+              "standardFlowEnabled": true,
+              "implicitFlowEnabled": false,
+              "directAccessGrantsEnabled": false,
+              "serviceAccountsEnabled": false,
+              "publicClient": true,
+              "frontchannelLogout": false,
             "protocol": "openid-connect",
             "attributes": {
                 "id.token.as.detached.signature": "false",
@@ -217,17 +135,3 @@ keycloak:
             }
         ]
         }
-  postgresql:
-    enabled: true
-    auth:
-      postgresPassword: auth
-      username: auth
-      password: auth
-      database: keycloak
-  httpRelativePath: "/cityos-auth/"
-  ingress:
-    enabled: true
-    hostname: localhost
-    path: "/cityos-auth/"
-    annotations:
-      kubernetes.io/ingress.class: "traefik"
