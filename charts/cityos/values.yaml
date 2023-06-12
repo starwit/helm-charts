@@ -15,13 +15,17 @@ nameOverride: ""
 fullnameOverride: ""
 
 initContainers:
-  resources: {}
+  resources: { }
 
 endpoints:
   traffic: http://localhost/traffic/api
   grafana: http://localhost/grafana
 endpointAuth:
   enabled: true
+
+cityos:
+  auth:
+    issuerUrl: http://localhost/cityos-auth/realms/citydashboard
 
 # add extra environment params to app server
 extraEnv: |
@@ -37,10 +41,8 @@ extraEnv: |
     value: https://carmel2.vw2-demospace.de/carmel-smart-cities-auth/realms/icv/protocol/openid-connect/token
   - name: VW2_CAMERASERVICEURL
     value: https://carmel2.vw2-demospace.de/carmel-smart-cities-cameraservice/v1/cameras
-  - name: CITYOS_AUTHENTICATION_URI
-    value: http://cityos-keycloak-http/cityos-auth/realms/citydashboard
-  - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
-    value: DEBUG
+#  - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+#    value: DEBUG
 serviceAccount:
   create: false
 
@@ -78,8 +80,8 @@ keycloak:
       value: yourpassword
     - name: PROXY_ADDRESS_FORWARDING
       value: "true"
-    - name: KEYCLOAK_FRONTEND_URL
-      value: http://localhost/cityos-auth
+  #    - name: KEYCLOAK_FRONTEND_URL
+  #      value: http://localhost/cityos-auth
   extraVolumeMounts: |
     - name: realm-json
       mountPath: "/realm/"
