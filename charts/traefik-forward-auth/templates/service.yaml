@@ -1,16 +1,11 @@
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: {{ include "traefik-forward-auth.fullname" . }}
-  labels:
-    app: traefik
-    {{- include "traefik-forward-auth.labels" . | nindent 4 }}
+  name: traefik-sso
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
   selector:
-    {{- include "traefik-forward-auth.selectorLabels" . | nindent 4 }}
+    app: traefik-sso
+  ports:
+    - protocol: TCP
+      port: 4181
+      targetPort: 4181

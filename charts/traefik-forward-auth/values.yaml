@@ -43,13 +43,14 @@ service:
 ingress:
   enabled: false
   className: ""
-  annotations: {}
+  annotations:
+    traefik-sso@kubernetescrd
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: localhost
+    - host: glacier
       paths:
-        - path: /auth
+        - path: /_oauth
           pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
