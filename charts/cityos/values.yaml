@@ -5,7 +5,7 @@ global:
 replicaCount: 1
 
 image:
-  repository: ghcr.io/starwit/city-demos
+  repository: ghcr.io/starwit/city-demos/backend
   pullPolicy: Always
 
 imagePullSecrets:
