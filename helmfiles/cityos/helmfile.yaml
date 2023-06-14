@@ -74,3 +74,12 @@ releases:
       - imagePullSecrets:
         - name: ghcr-starwit
 
+  - name: forward-auth
+    chart: ../../charts/traefik-forward-auth
+    inherit:
+      - template: defaultns
+      - template: dockerregistry
+    needs:
+      - secrets
+    values:
+      - ./values/traefik-forward-auth/values.yaml.gotmpl
