@@ -91,3 +91,8 @@ frontend:
     authority: http://localhost/cityos-auth/realms/citydashboard
     clientId: citydashboard
   publicEnv: []
+
+forwardAuth:
+  issuerUrl: ""
+  clientId: ""
+  clientSecret: ""

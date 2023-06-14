@@ -1,8 +1,9 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: {{ .Release.Name }}-forward-auth
-  namespace: {{ .Release.Namespace }}
-spec:
-  forwardAuth:
-    address: {{ .Values.frontend }}
+{{/*apiVersion: traefik.containo.us/v1alpha1*/}}
+{{/*kind: Middleware*/}}
+{{/*metadata:*/}}
+{{/*  name: traefik-forward-auth*/}}
+{{/*spec:*/}}
+{{/*  forwardAuth:*/}}
+{{/*    address: http://traefik-forward-auth:4181*/}}
+{{/*    authResponseHeaders:*/}}
+{{/*      - X-Forwarded-User*/}}

@@ -18,6 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        app: traefik-forward-auth
         {{- include "traefik-forward-auth.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -34,24 +35,22 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: PROVIDERS_OIDC_ISSUER-URL
-              value: {{.Values.forwardAuth.issuerUrl}}
-            - name: PROVIDERS_OIDC_CLIENT-ID
-              value: {{.Values.forwardAuth.clientId}}
-            - name: PROVIDERS_OIDC_CLIENT-SECRET
-              value: {{.Values.forwardAuth.clientSecret}}
+            - name: DEFAULT_PROVIDER
+              value: oidc
+            - name: PROVIDERS_OIDC_ISSUER_URL
+              value: {{ .Values.forwardAuth.issuerUrl }}
+            - name: PROVIDERS_OIDC_CLIENT_ID
+              value: {{ .Values.forwardAuth.clientId }}
+            - name: PROVIDERS_OIDC_CLIENT_SECRET
+              value: {{ .Values.forwardAuth.clientSecret }}
+            - name: SECRET
+              value: {{ randAlphaNum 32 | b64enc | quote }}
+            - name: AUTH_HOST
+              value: "http://glacier/"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

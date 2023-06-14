@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: {{ include "traefik-forward-auth.fullname" . }}
   labels:
+    app: traefik
     {{- include "traefik-forward-auth.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
