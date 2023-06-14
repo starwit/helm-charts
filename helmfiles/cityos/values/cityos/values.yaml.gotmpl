@@ -15,8 +15,5 @@ ingress:
 
 keycloak:
   ingress:
-    rules:
-      - host: {{ requiredEnv "HOSTNAME" }}
-        paths:
-          - path: /cityos-auth
-            pathType: Prefix
+    hostname: {{ requiredEnv "HOSTNAME" }}
+    path: "/cityos-auth"
