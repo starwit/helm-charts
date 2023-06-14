@@ -1,6 +1,3 @@
-autoscaling:
-  enabled: false
-fullnameOverride: ""
 global:
   keycloak:
     authServerUrl: http://cityos-keycloak-http/cityos-auth

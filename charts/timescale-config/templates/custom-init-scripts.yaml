@@ -10,3 +10,9 @@ data:
     CREATE ROLE hackathon WITH LOGIN;
     CREATE DATABASE hackathon OWNER hackathon;
     __SQL__
+
+    psql -d "$1" <<__SQL__
+    CREATE ROLE citydashboard WITH LOGIN;
+    CREATE DATABASE citydashboard OWNER citydashboard;
+    __SQL__
+

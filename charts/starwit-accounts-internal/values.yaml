@@ -1,0 +1,41 @@
+# Default values for starwit-accounts-internal.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+keycloak:
+  auth:
+    adminUser: admin
+    adminPassword: admin
+  production: true
+  proxy: edge
+  keycloakConfigCli:
+    enabled: true
+    command:
+      - java
+      - -jar
+      - /app/keycloak-config-cli.jar
+    image:
+      registry: ghcr.io
+      repository: starwit/starwit-accounts-config
+      tag: v1.0.1
+      pullSecrets:
+        - regcred
+    extraEnvVars: |
+      - name: IDP_AZURE_CLIENT_ID
+        value: hallo
+      - name: IDP_AZURE_CLIENT_SECRET
+        value: hallo
+  postgresql:
+    enabled: true
+    auth:
+      postgresPassword: auth
+      username: auth
+      password: auth
+      database: keycloak
+  ingress:
+    enabled: true
+    hostname: localhost
+    path: ""
+    annotations:
+      kubernetes.io/ingress.class: "traefik"
+    #      cert-manager.io/cluster-issuer: letsencrypt-prod

@@ -6,8 +6,11 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "cityos.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
+  {{- if .Values.traefik.middleware.stripprefix }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-prefix@kubernetescrd
+  {{- end }}
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
@@ -26,12 +29,14 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
+          {{- range .paths }}
           - path: /{{ $fullName }}
-            pathType: Prefix
+            pathType: {{ .pathType }}
             backend:
               service:
                 name: {{ $fullName }}
-                port: 
+                port:
                   number: 80
+          {{- end }}
     {{- end }}
   {{- end }}

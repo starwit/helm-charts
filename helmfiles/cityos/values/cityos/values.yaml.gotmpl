@@ -1,0 +1,22 @@
+cityos:
+  auth:
+    issuerUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
+
+endpoints:
+  traffic: http://{{ requiredEnv "HOSTNAME" }}/traffic/api
+  grafana: http://{{ requiredEnv "HOSTNAME" }}/grafana
+
+ingress:
+  enabled: true
+  hosts:
+    - host: {{ requiredEnv "HOSTNAME" }}
+      paths:
+        - pathType: Prefix
+
+keycloak:
+  ingress:
+    rules:
+      - host: {{ requiredEnv "HOSTNAME" }}
+        paths:
+          - path: /cityos-auth
+            pathType: Prefix

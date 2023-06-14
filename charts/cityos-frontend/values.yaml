@@ -6,9 +6,9 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/starwit/city-demos/frontend
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.1.1-13"
+  tag: "develop_v2"
 
 imagePullSecrets:
   - name: regcred
@@ -27,7 +27,7 @@ serviceAccount:
 podAnnotations: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
+# fsGroup: 2000
 
 securityContext: {}
   # capabilities:
@@ -35,24 +35,26 @@ securityContext: {}
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 1000
+# runAsUser: 1000
 
 service:
   type: ClusterIP
   port: 80
 
+traefik:
+  middleware:
+    stripprefix: true
+
 ingress:
-  enabled: false
+  enabled: true
   className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  annotations: { }
   hosts:
     - host: localhost
       paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
+        - path: /cityos
+          pathType: Prefix
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -67,7 +69,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 
 autoscaling:
   enabled: false
@@ -84,8 +86,8 @@ affinity: {}
 
 frontend:
   api:
-    baseUrl: http://localhost:8081/citydashboard/
+    baseUrl: http://localhost/cityos-cityos-api/
   auth:
-    authority: http://localhost:8080/auth/realms/citydashboard
+    authority: http://localhost/cityos-auth/realms/citydashboard
     clientId: citydashboard
   publicEnv: []
