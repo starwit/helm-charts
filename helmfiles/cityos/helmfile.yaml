@@ -75,7 +75,7 @@ releases:
         - name: ghcr-starwit
 
   - name: forward-auth
-    chart: ../../charts/traefik-forward-auth
+    chart: ../../charts/traefik-forward-auth2
     inherit:
       - template: defaultns
       - template: dockerregistry

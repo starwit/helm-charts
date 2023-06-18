@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "traefik-forward-auth2.fullname" . }}
+  labels:
+    {{- include "traefik-forward-auth2.labels" . | nindent 4 }}
+spec:
+  forwardAuth:
+    address: http://{{ include "traefik-forward-auth2.fullname" . }}:4181
+    authResponseHeaders:
+      - X-Forwarded-User
+      - X-Forwarded-Proto

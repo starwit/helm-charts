@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "traefik-forward-auth.name" -}}
+{{- define "traefik-forward-auth2.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "traefik-forward-auth.fullname" -}}
+{{- define "traefik-forward-auth2.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "traefik-forward-auth.chart" -}}
+{{- define "traefik-forward-auth2.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "traefik-forward-auth.labels" -}}
-helm.sh/chart: {{ include "traefik-forward-auth.chart" . }}
-{{ include "traefik-forward-auth.selectorLabels" . }}
+{{- define "traefik-forward-auth2.labels" -}}
+helm.sh/chart: {{ include "traefik-forward-auth2.chart" . }}
+{{ include "traefik-forward-auth2.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "traefik-forward-auth.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "traefik-forward-auth.name" . }}
+{{- define "traefik-forward-auth2.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "traefik-forward-auth2.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "traefik-forward-auth.serviceAccountName" -}}
+{{- define "traefik-forward-auth2.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "traefik-forward-auth.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "traefik-forward-auth2.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
