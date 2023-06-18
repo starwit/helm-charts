@@ -14,7 +14,7 @@ metadata:
   annotations:
   {{- if .Values.traefik.middleware.stripprefix }}
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-prefix@kubernetescrd
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-sso@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-traefik-forward-auth@kubernetescrd
   {{- end }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}

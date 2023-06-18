@@ -74,6 +74,10 @@ keycloak:
     adminPassword: yourpassword
   production: true
   proxy: edge
+  image:
+    debug: true
+  logging:
+    level: DEBUG
 
   keycloakConfigCli:
     enabled: true

@@ -1,22 +1,37 @@
+#
+# Traefik Forward Auth Deployment
+#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: traefik-sso
+  name: traefik-forward-auth
   labels:
-    app: traefik-sso
+    app: traefik-forward-auth
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik-forward-auth
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        name: traefik-sso
-        app: traefik-sso
-        {{- include "traefik-forward-auth.selectorLabels" . | nindent 8 }}
+        app: traefik-forward-auth
     spec:
+      terminationGracePeriodSeconds: 60
       containers:
-        - name: traefik-sso
-          image: thomseddon/traefik-forward-auth:2
-          imagePullPolicy: Always
+        - image: thomseddon/traefik-forward-auth:2
+          name: traefik-forward-auth
+          ports:
+            - containerPort: 4181
+              protocol: TCP
           env:
+            - name: DOMAIN
+              value: "glacier"
+            # INSECURE_COOKIE is required unless using https entrypoint
+            - name: INSECURE_COOKIE
+              value: "true"
             - name: DEFAULT_PROVIDER
               value: oidc
             - name: PROVIDERS_OIDC_ISSUER_URL
@@ -26,15 +41,61 @@ spec:
             - name: PROVIDERS_OIDC_CLIENT_SECRET
               value: {{ .Values.forwardAuth.clientSecret }}
             - name: SECRET
-              value: {{ randAlphaNum 32 | b64enc | quote }}
-            - name: AUTH_HOST
-              value: glacier/
-            - name: URL_PATH
-              value: /_oauth
+              value: "testsecretsupercool"
             - name: LOG_LEVEL
               value: debug
-          ports:
-            - containerPort: 4181
+
+---
+#
+# Auth Service
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik-forward-auth
+  labels:
+    app: traefik-forward-auth
+spec:
+  type: ClusterIP
   selector:
-    matchLabels:
-      {{- include "traefik-forward-auth.selectorLabels" . | nindent 6 }}
+    app: traefik-forward-auth
+  ports:
+    - name: auth-http
+      port: 4181
+      targetPort: 4181
+
+---
+#
+# Auth Middleware
+#
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-forward-auth
+spec:
+  forwardAuth:
+    address: http://traefik-forward-auth:4181
+    authResponseHeaders:
+      - X-Forwarded-User
+
+---
+#
+# Secrets
+#
+# Kubernetes requires secret values to be converted to base64 when defined
+# explicitly like this. (use `echo -n 'secret-value' | base64`)
+#
+# These are here for completeness, in reality you may define these elsewhere,
+# for example using kustomize (shown in advanced examples)
+#
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: traefik-forward-auth-secrets
+#  labels:  
+#    app: traefik-forward-auth
+#type: Opaque
+#data:
+#  traefik-forward-auth-google-client-id: base64-client-id
+#  traefik-forward-auth-google-client-secret: base64-client-secret
+#  traefik-forward-auth-secret: base64-something-random

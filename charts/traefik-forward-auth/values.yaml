@@ -51,7 +51,7 @@ ingress:
     - host: glacier
       paths:
         - path: /_oauth
-          pathType: Prefix
+          pathType:  Prefix
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
