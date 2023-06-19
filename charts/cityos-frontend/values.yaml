@@ -96,3 +96,37 @@ forwardAuth:
   issuerUrl: ""
   clientId: ""
   clientSecret: ""
+
+oauth2-proxy:
+  # https://gist.github.com/randomk/9e8a1145820428f201ab277caf397790
+#  config:
+#    clientID: forward-auth
+#    clientSecret: x1fbsjkqpSvICyacmPu7RfvFtzr8NPuO
+#    cookieSecret: c25jRE5KZHBKdFBMZmZBR2dYbDRjbytmajBlYmhUTGY=
+  #  configFile: |-
+  #    email_domains = [ "*" ]
+  #    upstreams = [ "file:///dev/null" ]
+
+
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+  extraArgs:
+    provider: keycloak-oidc
+    client-id: forward-auth
+    client-secret: x1fbsjkqpSvICyacmPu7RfvFtzr8NPuO
+    redirect-url: http://glacier/oauth2/callback
+    oidc-issuer-url: http://glacier/cityos-auth/realms/citydashboard
+    provider-display-name: "Starwit accounts"
+    cookie-secure: false
+    cookie-name: "_oauth2_proxy"
+    skip-provider-button: false
+    reverse-proxy: true
+
+
+  ingress:
+    enabled: true
+    hosts: [ glacier ]
+    path: /oauth2
+    pathType: Prefix
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: cityos-cityos-frontend-auth-headers@kubernetescrd
+

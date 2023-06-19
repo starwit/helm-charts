@@ -13,8 +13,9 @@ metadata:
     {{- include "cityos-frontend.labels" . | nindent 4 }}
   annotations:
   {{- if .Values.traefik.middleware.stripprefix }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-oauth-errors@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-oauth2-proxy@kubernetescrd
     traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-prefix@kubernetescrd
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-forward-auth-traefik-forward-auth2@kubernetescrd
   {{- end }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}

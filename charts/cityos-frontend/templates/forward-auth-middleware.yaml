@@ -1,9 +1,13 @@
-{{/*apiVersion: traefik.containo.us/v1alpha1*/}}
-{{/*kind: Middleware*/}}
-{{/*metadata:*/}}
-{{/*  name: traefik-forward-auth*/}}
-{{/*spec:*/}}
-{{/*  forwardAuth:*/}}
-{{/*    address: http://traefik-forward-auth:4181*/}}
-{{/*    authResponseHeaders:*/}}
-{{/*      - X-Forwarded-User*/}}
+{{- $fullName := include "cityos-frontend.fullname" . -}}
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Release.Name }}-oauth2-proxy
+spec:
+  forwardAuth:
+    address: http://cityos-frontend-oauth2-proxy/oauth2/auth
+    trustForwardHeader: true
+    authResponseHeaders:
+      - X-Auth-Request-User
+      - Set-Cookie

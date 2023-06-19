@@ -12,6 +12,8 @@ repositories:
   url: https://helm.runix.net
 - name: grafana
   url: https://grafana.github.io/helm-charts
+- name: oauth2-proxy
+  url: https://oauth2-proxy.github.io/manifests
 
 releases:
 
@@ -74,12 +76,21 @@ releases:
       - imagePullSecrets:
         - name: ghcr-starwit
 
-  - name: forward-auth
-    chart: ../../charts/traefik-forward-auth2
-    inherit:
-      - template: defaultns
-      - template: dockerregistry
-    needs:
-      - secrets
-    values:
-      - ./values/traefik-forward-auth/values.yaml.gotmpl
+#  - name: forward-auth
+#    chart: ../../charts/traefik-forward-auth2
+#    inherit:
+#      - template: defaultns
+#      - template: dockerregistry
+#    needs:
+#      - secrets
+#    values:
+#      - ./values/traefik-forward-auth/values.yaml.gotmpl
+#  - name: oauth2-proxy
+#    chart: oauth2-proxy/oauth2-proxy
+#    inherit:
+#      - template: defaultns
+#      - template: dockerregistry
+#    needs:
+#      - secrets
+#    values:
+#      - ./values/oauth2-proxy/values.yaml.gotmpl
