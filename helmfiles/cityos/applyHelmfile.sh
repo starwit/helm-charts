@@ -1,3 +1,4 @@
 #!/bin/bash
-
-set -a; . .env; set +a; helmfile apply
+export HOSTNAME=${HOSTNAME,,}
+echo "hostname is: $HOSTNAME"
+helmfile apply
