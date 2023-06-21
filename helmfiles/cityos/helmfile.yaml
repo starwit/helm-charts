@@ -47,6 +47,7 @@ releases:
       - template: dockerregistry
     needs:
       - secrets
+      - cityos
     values:
       - ./values/cityos-frontend/values.yaml.gotmpl
       - imagePullSecrets:
@@ -75,22 +76,3 @@ releases:
       - ./values/traffic/values.yaml.gotmpl
       - imagePullSecrets:
         - name: ghcr-starwit
-
-#  - name: forward-auth
-#    chart: ../../charts/traefik-forward-auth2
-#    inherit:
-#      - template: defaultns
-#      - template: dockerregistry
-#    needs:
-#      - secrets
-#    values:
-#      - ./values/traefik-forward-auth/values.yaml.gotmpl
-#  - name: oauth2-proxy
-#    chart: oauth2-proxy/oauth2-proxy
-#    inherit:
-#      - template: defaultns
-#      - template: dockerregistry
-#    needs:
-#      - secrets
-#    values:
-#      - ./values/oauth2-proxy/values.yaml.gotmpl
