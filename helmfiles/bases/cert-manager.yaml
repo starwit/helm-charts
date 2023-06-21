@@ -9,3 +9,12 @@ releases:
       - template: defaultns
     values:
       - values/cert-manager-values.yaml
+    installed: {{ eq .Values.releaseName "prod" | toYaml }}
+
+  - name: cert-manager-issuer
+      chart: ../../charts/cert-manager-issuer
+      inherit:
+        - template: defaultns
+      needs:
+      - cert-manager
+      installed: {{ eq .Values.releaseName "prod" | toYaml }}
