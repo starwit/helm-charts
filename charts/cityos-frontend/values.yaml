@@ -115,7 +115,7 @@ oauth2-proxy:
   extraArgs:
     provider: keycloak-oidc
     client-id: forward-auth
-    client-secret: x1fbsjkqpSvICyacmPu7RfvFtzr8NPuO
+    client-secret: JGwooYxoxZ00HUsNldlktdvxTcUJ40bQ
     redirect-url: http://glacier/oauth2/callback
     oidc-issuer-url: http://glacier/cityos-auth/realms/citydashboard
     provider-display-name: "Starwit accounts"
@@ -123,7 +123,13 @@ oauth2-proxy:
     cookie-name: "_oauth2_proxy"
     skip-provider-button: false
     reverse-proxy: true
-
+    pass-user-headers: true
+    set-xauthrequest: true
+    set-authorization-header: true
+    pass-authorization-header: true
+    pass-access-token: true
+    upstream: "file:///dev/null"
+    whitelist-domain: "glacier"
 
   ingress:
     enabled: true

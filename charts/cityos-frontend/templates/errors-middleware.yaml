@@ -11,4 +11,4 @@ spec:
     service:
       name: {{$fullName}}-oauth2-proxy
       port: 80
-    query: "/oauth2/start/"
+    query: "/oauth2/start?rd=http%3A%2F%2Fglacier%2Fcityos%2F"

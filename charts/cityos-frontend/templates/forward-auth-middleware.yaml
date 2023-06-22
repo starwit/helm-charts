@@ -3,11 +3,8 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: {{ .Release.Name }}-oauth2-proxy
+  name: {{$fullName}}-oauth-auth
 spec:
   forwardAuth:
-    address: http://cityos-frontend-oauth2-proxy/oauth2/auth
+    address: http://glacier/oauth2/auth
     trustForwardHeader: true
-    authResponseHeaders:
-      - X-Auth-Request-User
-      - Set-Cookie

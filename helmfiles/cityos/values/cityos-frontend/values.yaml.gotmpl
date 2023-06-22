@@ -12,8 +12,3 @@ frontend:
   auth:
     authority: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
     clientId: citydashboard
-
-forwardAuth:
-  issuerUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
-  clientId: forward-auth
-  clientSecret: "O0lVou1NnfoH2uOWslmd9FIm56l756ms"
