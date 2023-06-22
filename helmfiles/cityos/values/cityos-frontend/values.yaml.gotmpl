@@ -1,7 +1,7 @@
 ingress:
   enabled: true
   hosts:
-    - host: {{ requiredEnv "HOSTNAME" }}
+    - host: {{ .Values.releaseName | requiredEnv "HOSTNAME" }}
       paths:
         - path: /cityos
           pathType: Prefix
