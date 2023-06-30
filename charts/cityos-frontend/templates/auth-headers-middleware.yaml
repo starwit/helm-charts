@@ -1,0 +1,16 @@
+{{- $fullName := include "cityos-frontend.fullname" . -}}
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{$fullName}}-auth-headers
+spec:
+  headers:
+    sslRedirect: false
+    stsSeconds: 315360000
+    browserXssFilter: true
+    contentTypeNosniff: true
+    forceSTSHeader: true
+    stsIncludeSubdomains: true
+    stsPreload: true
+    frameDeny: true

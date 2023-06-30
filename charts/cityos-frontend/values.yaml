@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Interesting stuff
+# https://github.com/oauth2-proxy/oauth2-proxy/issues/1297
+
 replicaCount: 1
 
 image:
@@ -91,3 +94,38 @@ frontend:
     authority: http://localhost/cityos-auth/realms/citydashboard
     clientId: citydashboard
   publicEnv: []
+  forwardAuth:
+    authAddress: http://glacier/oauth2/auth
+    loginUrl: /oauth2/start?rd=http%3A%2F%2Fglacier%2Fcityos%2F
+
+
+oauth2-proxy:
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+  extraArgs:
+    provider: keycloak-oidc
+    client-id: forward-auth
+    client-secret: JGwooYxoxZ00HUsNldlktdvxTcUJ40bQ
+    redirect-url: http://glacier/oauth2/callback
+    oidc-issuer-url: http://glacier/cityos-auth/realms/citydashboard
+    provider-display-name: "Starwit accounts"
+    cookie-secure: false
+    cookie-name: "_oauth2_proxy"
+    skip-provider-button: true
+    reverse-proxy: true
+    pass-user-headers: true
+    set-xauthrequest: true
+    set-authorization-header: true
+    pass-authorization-header: true
+    pass-access-token: true
+    #upstream: "file:///dev/null"
+    whitelist-domain: "glacier"
+    proxy-prefix: /oauth2
+
+  ingress:
+    enabled: true
+    hosts: [ glacier ]
+    path: /oauth2
+    pathType: Prefix
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: cityos-cityos-frontend-auth-headers@kubernetescrd
+

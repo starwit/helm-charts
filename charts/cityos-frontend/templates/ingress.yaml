@@ -13,11 +13,12 @@ metadata:
     {{- include "cityos-frontend.labels" . | nindent 4 }}
   annotations:
   {{- if .Values.traefik.middleware.stripprefix }}
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-strip-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Release.Name }}-oauth-errors@kubernetescrd, {{ .Release.Namespace }}-{{ .Release.Name }}-oauth-auth@kubernetescrd, {{ .Release.Namespace }}-{{ .Release.Name }}-strip-prefix@kubernetescrd
   {{- end }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
+
 spec:
   {{- if .Values.ingress.tls }}
   tls:

@@ -1,0 +1,14 @@
+{{- $fullName := include "cityos-frontend.fullname" . -}}
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{$fullName}}-oauth-errors
+spec:
+  errors:
+    status:
+      - "401-403"
+    service:
+      name: {{$fullName}}-oauth2-proxy
+      port: 80
+    query: {{.Values.frontend.forwardAuth.loginUrl}}

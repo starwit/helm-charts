@@ -12,6 +12,8 @@ repositories:
   url: https://helm.runix.net
 - name: grafana
   url: https://grafana.github.io/helm-charts
+- name: oauth2-proxy
+  url: https://oauth2-proxy.github.io/manifests
 
 releases:
 
@@ -45,6 +47,7 @@ releases:
       - template: dockerregistry
     needs:
       - secrets
+      - cityos
     values:
       - ./values/cityos-frontend/values.yaml.gotmpl
       - imagePullSecrets:
@@ -73,4 +76,3 @@ releases:
       - ./values/traffic/values.yaml.gotmpl
       - imagePullSecrets:
         - name: ghcr-starwit
-

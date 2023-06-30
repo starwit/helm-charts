@@ -1,0 +1,10 @@
+{{- $fullName := include "cityos-frontend.fullname" . -}}
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{$fullName}}-oauth-auth
+spec:
+  forwardAuth:
+    address: {{.Values.frontend.forwardAuth.authAddress}}
+    trustForwardHeader: true

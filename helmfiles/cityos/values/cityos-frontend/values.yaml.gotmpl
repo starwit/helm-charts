@@ -3,7 +3,7 @@ ingress:
   hosts:
     - host: {{ requiredEnv "HOSTNAME" }}
       paths:
-        - path: /cityos
+        - path: /{{ .StateValues.frontend.pathName | default "cityos" }}
           pathType: Prefix
 
 frontend:
@@ -12,3 +12,27 @@ frontend:
   auth:
     authority: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
     clientId: citydashboard
+  forwardAuth:
+    authAddress: http://{{ requiredEnv "HOSTNAME" }}/{{ .StateValues.frontend.pathName | default "cityos"  }}-oauth2/auth
+    loginUrl: /{{ .StateValues.frontend.pathName | default "cityos"  }}-oauth2/sign_in?rd=http%3A%2F%2F{{ requiredEnv "HOSTNAME" }}%2F{{ .StateValues.frontend.pathName | default "cityos"  }}%2F
+
+oauth2-proxy:
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+  extraArgs:
+    provider: keycloak-oidc
+    client-id: {{ .StateValues.oauth2.clientId }}
+    client-secret: {{ .StateValues.oauth2.clientSecret }}
+    redirect-url: http://{{ requiredEnv "HOSTNAME" }}/{{ .StateValues.frontend.pathName | default "cityos"  }}-oauth2/callback
+    oidc-issuer-url: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
+    provider-display-name: "Starwit Accounts"
+    cookie-secure: false
+    whitelist-domain: {{ requiredEnv "HOSTNAME" }}
+    proxy-prefix: /{{ .StateValues.frontend.pathName | default "cityos"  }}-oauth2
+
+  ingress:
+    enabled: true
+    hosts: [ {{ requiredEnv "HOSTNAME" }} ]
+    path: /{{ .StateValues.frontend.pathName | default "cityos"  }}-oauth2
+    pathType: Prefix
+    annotations:
+      traefik.ingress.kubernetes.io/router.middlewares: {{.Release.Namespace}}-{{ .Release.Name }}-auth-headers@kubernetescrd
