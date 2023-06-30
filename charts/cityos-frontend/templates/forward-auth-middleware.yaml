@@ -6,5 +6,5 @@ metadata:
   name: {{$fullName}}-oauth-auth
 spec:
   forwardAuth:
-    address: http://glacier/oauth2/auth
+    address: {{.Values.frontend.forwardAuth.authAddress}}
     trustForwardHeader: true

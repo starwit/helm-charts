@@ -46,6 +46,3 @@ spec:
           {{- end }}
     {{- end }}
   {{- end }}
-# https://brianturchyn.net/traefik-forwardauth-support-with-keycloak/
-# https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
-# https://github.com/thomseddon/traefik-forward-auth

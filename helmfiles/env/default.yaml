@@ -1,1 +1,7 @@
 releaseName: default
+frontend:
+  pathName: cityos
+
+oauth2:
+  clientId: citydashboard-forward-auth
+  clientSecret: LgVyw0k3zDsgGqTOLdzHVG4X67t0Bptc

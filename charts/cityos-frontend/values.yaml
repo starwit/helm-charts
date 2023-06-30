@@ -94,23 +94,12 @@ frontend:
     authority: http://localhost/cityos-auth/realms/citydashboard
     clientId: citydashboard
   publicEnv: []
+  forwardAuth:
+    authAddress: http://glacier/oauth2/auth
+    loginUrl: /oauth2/start?rd=http%3A%2F%2Fglacier%2Fcityos%2F
 
-forwardAuth:
-  issuerUrl: ""
-  clientId: ""
-  clientSecret: ""
 
 oauth2-proxy:
-  # https://gist.github.com/randomk/9e8a1145820428f201ab277caf397790
-#  config:
-#    clientID: forward-auth
-#    clientSecret: x1fbsjkqpSvICyacmPu7RfvFtzr8NPuO
-#    cookieSecret: c25jRE5KZHBKdFBMZmZBR2dYbDRjbytmajBlYmhUTGY=
-  #  configFile: |-
-  #    email_domains = [ "*" ]
-  #    upstreams = [ "file:///dev/null" ]
-
-
   # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
   extraArgs:
     provider: keycloak-oidc
@@ -121,15 +110,16 @@ oauth2-proxy:
     provider-display-name: "Starwit accounts"
     cookie-secure: false
     cookie-name: "_oauth2_proxy"
-    skip-provider-button: false
+    skip-provider-button: true
     reverse-proxy: true
     pass-user-headers: true
     set-xauthrequest: true
     set-authorization-header: true
     pass-authorization-header: true
     pass-access-token: true
-    upstream: "file:///dev/null"
+    #upstream: "file:///dev/null"
     whitelist-domain: "glacier"
+    proxy-prefix: /oauth2
 
   ingress:
     enabled: true
