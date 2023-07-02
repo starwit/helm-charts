@@ -1,7 +1,10 @@
 environments: 
   default:
     values:
-    - ../env/default.yaml
+    - ../env/{{ .Environment.Name }}/env.yaml
   dev:
     values:
-    - ../env/dev.yaml
+    - ../env/{{ .Environment.Name }}/env.yaml
+  prod:
+    values:
+    - ../env/{{ .Environment.Name }}/env.yaml

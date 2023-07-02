@@ -1,0 +1,20 @@
+repositories:
+- name: jetstack
+  url: https://charts.jetstack.io
+
+releases:
+  - name: cert-manager
+    chart: jetstack/cert-manager
+    inherit:
+      - template: defaultns
+    values:
+      - ../env/{{ .Environment.Name }}/cert-manager-values.yaml
+    installed: {{ eq .Environment.Name "prod" | toYaml }}
+
+#  - name: cert-manager-issuer
+#    chart: ../../charts/cert-manager-issuer
+#    inherit:
+#      - template: defaultns
+#    needs:
+#      - cert-manager
+#    installed: {{ eq .Environment.Name "prod" | toYaml }}

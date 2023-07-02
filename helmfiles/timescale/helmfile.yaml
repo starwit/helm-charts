@@ -1,4 +1,5 @@
 bases:
-  - ../bases/timescale.yaml
   - ../bases/environments.yaml
   - ../bases/templates.yaml
+  - ../bases/timescale.yaml
+  - ../bases/cert-manager.yaml
