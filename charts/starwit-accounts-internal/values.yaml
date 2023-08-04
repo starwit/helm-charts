@@ -36,6 +36,4 @@ keycloak:
     enabled: true
     hostname: localhost
     path: ""
-    annotations:
-      kubernetes.io/ingress.class: "traefik"
-    #      cert-manager.io/cluster-issuer: letsencrypt-prod
+
