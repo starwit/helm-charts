@@ -1,9 +1,9 @@
 landing:
-  loginUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos/
+  loginUrl: http://{{ .Values | get "host" "localhost" }}/cityos/
 
 ingress:
   hosts:
-    - host: {{ requiredEnv "HOSTNAME" }}
+    - host: {{ .Values | get "host" "localhost" }}
       paths:
         - path: /landing/
           pathType: Prefix

@@ -1,1 +1,7 @@
 releaseName: prod
+host: localhost
+pg_hba: 
+  encryption:
+    local: md5
+    hostnossl: reject
+    hostssl: md5

@@ -1,0 +1,7 @@
+releaseName: dev
+host: localhost
+pg_hba: 
+  encryption:
+    local: password
+    hostnossl: password
+    hostssl: password

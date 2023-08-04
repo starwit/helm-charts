@@ -1,19 +1,19 @@
 cityos:
   auth:
-    issuerUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
+    issuerUrl: http://{{ .Values | get "host" "localhost" }}/cityos-auth/realms/citydashboard
 
 endpoints:
-  traffic: http://{{ requiredEnv "HOSTNAME" }}/traffic/api
-  grafana: http://{{ requiredEnv "HOSTNAME" }}/grafana
+  traffic: http://{{ .Values | get "host" "localhost" }}/traffic/api
+  grafana: http://{{ .Values | get "host" "localhost" }}/grafana
 
 ingress:
   enabled: true
   hosts:
-    - host: {{ requiredEnv "HOSTNAME" }}
+    - host: {{ .Values | get "host" "localhost" }}
       paths:
         - pathType: Prefix
 
 keycloak:
   ingress:
-    hostname: {{ requiredEnv "HOSTNAME" }}
+    hostname: {{ .Values | get "host" "localhost" }}
     path: "/cityos-auth"

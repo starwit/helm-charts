@@ -1,0 +1,7 @@
+releaseName: dev
+host: anett-xmg-fusion-15-xfu15l19
+pg_hba: 
+  encryption:
+    local: password
+    hostnossl: password
+    hostssl: password

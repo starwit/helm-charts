@@ -1,14 +1,14 @@
 ingress:
   enabled: true
   hosts:
-    - host: {{ .Values.releaseName | requiredEnv "HOSTNAME" }}
+    - host: {{ .Values | get "host" "localhost" }}
       paths:
         - path: /cityos
           pathType: Prefix
 
 frontend:
   api:
-    baseUrl: http://{{ requiredEnv "HOSTNAME" }}/cityos-cityos-api/
+    baseUrl: http://{{ .Values | get "host" "localhost" }}/cityos-cityos-api/
   auth:
-    authority: http://{{ requiredEnv "HOSTNAME" }}/cityos-auth/realms/citydashboard
+    authority: http://{{ .Values | get "host" "localhost" }}/cityos-auth/realms/citydashboard
     clientId: citydashboard

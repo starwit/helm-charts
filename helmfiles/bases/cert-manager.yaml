@@ -8,7 +8,7 @@ releases:
     inherit:
       - template: defaultns
     values:
-      - ../env/{{ .Environment.Name }}/cert-manager-values.yaml
+      - ../cert-manager/values/cert-manager-values.yaml
     installed: {{ eq .Environment.Name "prod" | toYaml }}
 
 #  - name: cert-manager-issuer

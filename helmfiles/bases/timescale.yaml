@@ -8,7 +8,7 @@ releases:
     inherit:
       - template: defaultns
     values:
-      - ../env/{{ .Environment.Name }}/pgadmin4-values.yaml.gotmpl
+      - ../timescale/values/pgadmin4-values.yaml.gotmpl
 
   - name: timescale-config
     chart: ../../charts/timescale-config
@@ -18,7 +18,7 @@ releases:
   - name: timescale
     chart: timescale/timescaledb-single
     values:
-      - ../env/{{ .Environment.Name }}/timescale-values.yaml
+      - ../timescale/values/timescale-values.yaml.gotmpl
     inherit:
       - template: defaultns
     needs:

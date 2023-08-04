@@ -12,10 +12,10 @@ repositories:
 environments: 
   default:
     values:
-    - ../env/default/env.yaml
+    - ../env/local.yaml
   dev:
     values:
-    - ../env/dev/env.yaml
+    - ../env/dev.yaml
   prod:
     values:
-    - ../env/prod/env.yaml
+    - ../env/prod.yaml

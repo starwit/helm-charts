@@ -8,20 +8,19 @@ fullnameOverride: "{{ .Release.Name }}-timescaledb"
 #   - archive_command will be set to /bin/true if backup is disabled
 #   - any context sensitive parameter (scope, namespace, name) will be overridden by the Kubernetes context
 # https://patroni.readthedocs.io/en/latest/SETTINGS.html#settings
-patroni:
+patroni: 
   postgresql:
     pg_hba:
     - local     all             postgres                              peer
-    - local     all             all                                   password
-    - hostnossl all,replication all                all                password
-    - hostssl   all             all                127.0.0.1/32       password
-    - hostssl   all             all                ::1/128            password
-    - hostssl   replication     standby            all                password
-    - hostssl   all             all                all                password
+    - local     all             all                                   {{ .Values | get "pg_hba.encryption.local" "" }}
+    - hostnossl all,replication all                all                {{ .Values | get "pg_hba.encryption.hostnossl" "" }}
+    - hostssl   all             all                127.0.0.1/32       {{ .Values | get "pg_hba.encryption.hostssl" "" }}
+    - hostssl   all             all                ::1/128            {{ .Values | get "pg_hba.encryption.hostssl" "" }}
+    - hostssl   replication     standby            all                {{ .Values | get "pg_hba.encryption.hostssl" "" }}
+    - hostssl   all             all                all                {{ .Values | get "pg_hba.encryption.hostssl" "" }}
     use_unix_socket: true
   restapi:
     listen: 0.0.0.0:8008
-
 postInit:
   # A list of sources, that contain post init scripts.
   # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#projectedvolumesource-v1-core
