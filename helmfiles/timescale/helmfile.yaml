@@ -1,5 +1,21 @@
 bases:
-  - ../bases/environments.yaml
   - ../bases/templates.yaml
   - ../bases/timescale.yaml
   - ../bases/cert-manager.yaml
+
+repositories:
+- name: bitnami
+  url: https://charts.bitnami.com/bitnami
+- name: runix
+  url: https://helm.runix.net
+
+environments: 
+  default:
+    values:
+    - ../env/default/env.yaml
+  dev:
+    values:
+    - ../env/dev/env.yaml
+  prod:
+    values:
+    - ../env/prod/env.yaml

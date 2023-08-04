@@ -94,7 +94,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   # ingressClassName: ""
   hosts:
-    - host: localhost
+    - host: {{ .Values | get "host" "localhost" }}
       paths:
         - path: /pgadmin4
           pathType: Prefix

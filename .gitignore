@@ -2,3 +2,4 @@ values.secrets.yaml
 **/helmfile.lock
 /helmfiles/cityos/.env
 k3s-dev-cluster/kubeconfig/kubeconfig.yaml
+k3s-dev-cluster/kubeconfig/kubeconfig.yaml
