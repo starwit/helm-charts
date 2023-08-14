@@ -1,5 +1,5 @@
 releaseName: prod
-host: anett-xmg-fusion-15-xfu15l19
+host: demo.city-os.eu
 pg_hba: 
   encryption:
     local: md5
