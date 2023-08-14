@@ -55,10 +55,8 @@ ingress:
     - host: localhost
       paths:
         - pathType: Prefix
-#  tls:
-#    - secretName: host-tls
-#      hosts:
-#        - localhost
+  tls:
+    enabled: false
 
 postgresql:
   serviceurl: timescale-timescaledb
@@ -74,7 +72,14 @@ keycloak:
     adminPassword: yourpassword
   production: true
   proxy: edge
-
+  ingress:
+    enabled: true
+    hostname: localhost
+    path: "/cityos-auth"
+    tls: 
+      - secretName: host-tls
+        hosts:
+        - localhost
   keycloakConfigCli:
     enabled: true
     command:
@@ -225,7 +230,4 @@ keycloak:
       password: auth
       database: keycloak
   httpRelativePath: "/cityos-auth/"
-  ingress:
-    enabled: true
-    hostname: localhost
-    path: "/cityos-auth"
+

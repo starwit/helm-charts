@@ -11,6 +11,7 @@ This helmfiles are deploying different setups used for different environments.
     * This deployment is partly tailored for Traefik Ingress. Please ensure, that the Traefik CRDs are installed
       correctly
         * `kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml`
+        * `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.3/cert-manager.crds.yaml`
 
 A setup for dev-environments is also described in https://github.com/starwit/flux/tree/feature/main#helmfile-deployment.
 

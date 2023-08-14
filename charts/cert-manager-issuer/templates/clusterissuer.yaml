@@ -7,7 +7,7 @@ spec:
     email: {{ .Values.issuer.email }}
     preferredChain: ""
     privateKeySecretRef:
-      name: prod-issuer-account-key
+      name: host-tls
     server: {{ .Values.issuer.url }}
     solvers:
     - http01:

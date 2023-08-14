@@ -56,10 +56,8 @@ ingress:
       paths:
         - path: /landing/
           pathType: Prefix
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls:
+    enabled: false
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

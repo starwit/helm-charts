@@ -5,3 +5,5 @@ pg_hba:
     local: password
     hostnossl: password
     hostssl: password
+tls:
+  enabled: false

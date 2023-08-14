@@ -8,12 +8,24 @@ endpoints:
 
 ingress:
   enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values | get "tls.issuer" "letsencrypt-prod" }}
   hosts:
     - host: {{ .Values | get "host" "localhost" }}
       paths:
         - pathType: Prefix
+  tls:
+    enabled: {{ .Values | get "tls.enabled" false }}
+    secretName: host-tls
+    issuer: {{ .Values | get "tls.issuer" "letsencrypt-prod" }}
+    hosts:
+      - host: {{ .Values | get "host" "localhost" }}
 
 keycloak:
   ingress:
     hostname: {{ .Values | get "host" "localhost" }}
     path: "/cityos-auth"
+    tls: 
+      - secretName: host-tls
+        hosts:
+        - {{ .Values | get "host" "localhost" }}

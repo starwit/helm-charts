@@ -47,17 +47,13 @@ traefik:
 
 ingress:
   enabled: true
-  className: ""
-  annotations: { }
   hosts:
     - host: localhost
       paths:
         - path: /cityos
           pathType: Prefix
-  tls: [ ]
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls:
+    enabled: false
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

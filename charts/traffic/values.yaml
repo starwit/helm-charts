@@ -54,6 +54,7 @@ ingress:
       {{- end }}
       run-batch
       stop-embedded-server
+  tls: false
 
 postgresql:
   serviceurl: timescale-timescaledb

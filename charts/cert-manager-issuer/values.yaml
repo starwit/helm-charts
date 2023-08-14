@@ -1,4 +1,4 @@
 issuer:
-  url: info@starwit.de
-  email: https://acme-v02.api.letsencrypt.org/directory
+  email: info@starwit.de
+  url: https://acme-v02.api.letsencrypt.org/directory
   ingress: traefik
