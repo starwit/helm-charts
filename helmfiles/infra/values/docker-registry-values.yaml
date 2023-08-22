@@ -1,0 +1,15 @@
+persistence:
+  enabled: true
+  size: 50Gi # According to the local-path-provisioner docs the size is not supported atm
+
+ingress:
+  enabled: true
+  hosts:
+    - docker.internal.starwit-infra.de
+  tls:
+    - secretName: docker-registry-tls
+      hosts:
+        - docker.internal.starwit-infra.de
+
+garbageCollect:
+  enabled: true

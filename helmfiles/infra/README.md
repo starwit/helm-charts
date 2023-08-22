@@ -16,3 +16,6 @@ As we need valid TLS certificates (i.e. through cert-manager and Let's Encrypt),
 
 ## Chartmuseum
 Hosted on `helm.internal.starwit-infra.de`. \
+
+# ToDos
+- I have not managed to get the "needs" feature of Helmfile to work, so in order for the deployment to work, you have to install cert-manager first for all the CRDs to be in place (e.g. `helmfile apply -l type=prereq`)
