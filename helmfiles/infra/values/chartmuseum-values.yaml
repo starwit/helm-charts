@@ -1,0 +1,14 @@
+persistence:
+  enabled: true
+  size: 5Gi
+
+ingress:
+  enabled: true
+  hosts:
+    - name: helm.internal.starwit-infra.de
+      tls: true
+      tlsSecret: chartmuseum-tls
+
+env:
+  open:
+    DISABLE_API: false

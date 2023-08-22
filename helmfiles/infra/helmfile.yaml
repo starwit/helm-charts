@@ -1,0 +1,41 @@
+repositories:
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: cert-manager-webhook-hetzner
+    url: https://vadimkim.github.io/cert-manager-webhook-hetzner
+  - name: chartmuseum
+    url: https://chartmuseum.github.io/charts
+
+releases:
+
+  - name: extra-resources
+    chart: ./extra-resources
+    strategicMergePatches:
+      - apiVersion: v1
+        kind: Secret
+        metadata:
+          name: hetzner-secret
+          namespace: cert-manager
+        data:
+          api-key: {{ requiredEnv "HETZNER_API_KEY" | b64enc }}
+
+  - name: cert-manager
+    chart: jetstack/cert-manager
+    version: v1.12.3
+    namespace: cert-manager
+    values:
+      - installCRDs: true
+
+  - name: cert-manager-webhook-hetzner
+    chart: cert-manager-webhook-hetzner/cert-manager-webhook-hetzner
+    version: 1.2.2
+    namespace: cert-manager
+    values:
+      - groupName: acme.starwit.de
+
+  - name: chartmuseum
+    chart: chartmuseum/chartmuseum
+    version: 3.10.1
+    namespace: chartmuseum
+    values:
+      - ./values/chartmuseum-values.yaml
