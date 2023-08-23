@@ -57,7 +57,9 @@ releases:
 
   - name: extra-resources
     chart: ./extra-resources
+    # This option does probably not work (it is supposed to work around the issue that CRDs are missing on first install)
     disableValidation: true
+    namespace: extra-resources
     needs:
       - cert-manager/cert-manager
     values:
