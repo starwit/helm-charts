@@ -1,0 +1,19 @@
+ui:
+  # I did not care much for the number of CRs necessary to make Traefik add the CORS headers, so we're doing it like this...
+  dockerRegistryUrl: http://docker-registry:5000
+  proxy: true
+  pullUrl: https://docker.internal.starwit-infra.de
+
+  deleteImages: true
+  showContentDigest: true
+
+  image: joxit/docker-registry-ui:2.5.2
+
+  ingress:
+    enabled: true
+    host: docker-ui.internal.starwit-infra.de
+    ingressClassName: traefik
+    tls:
+      - secretName: docker-registry-ui-tls
+        hosts:
+          - docker-ui.internal.starwit-infra.de

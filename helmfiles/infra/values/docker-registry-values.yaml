@@ -4,6 +4,7 @@ persistence:
 
 ingress:
   enabled: true
+  className: traefik
   hosts:
     - docker.internal.starwit-infra.de
   tls:

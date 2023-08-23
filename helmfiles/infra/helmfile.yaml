@@ -7,6 +7,8 @@ repositories:
     url: https://chartmuseum.github.io/charts
   - name: twuni
     url: https://helm.twun.io
+  - name: joxit
+    url: https://helm.joxit.dev
 
 releases:
 
@@ -14,8 +16,6 @@ releases:
     chart: jetstack/cert-manager
     version: v1.12.3
     namespace: cert-manager
-    labels:
-      type: prereq
     values:
       - installCRDs: true
 
@@ -23,6 +23,8 @@ releases:
     chart: cert-manager-webhook-hetzner/cert-manager-webhook-hetzner
     version: 1.2.2
     namespace: cert-manager
+    needs:
+      - cert-manager/cert-manager
     values:
       - groupName: acme.starwit.de
 
@@ -30,20 +32,33 @@ releases:
     chart: chartmuseum/chartmuseum
     version: 3.10.1
     namespace: chartmuseum
+    needs:
+      - cert-manager/cert-manager
     values:
       - ./values/chartmuseum-values.yaml
 
-  # - name: docker-registry
-  #   chart: twuni/docker-registry
-  #   version: 2.2.2
+  - name: docker-registry
+    chart: twuni/docker-registry
+    version: 2.2.2
+    namespace: docker-registry
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - ./values/docker-registry-values.yaml
+
+  - name: docker-registry-ui
+    chart: joxit/docker-registry-ui
+    version: 1.1.2
+    namespace: docker-registry
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - ./values/docker-registry-ui-values.yaml
 
   - name: extra-resources
     chart: ./extra-resources
-    strategicMergePatches:
-      - apiVersion: v1
-        kind: Secret
-        metadata:
-          name: hetzner-secret
-          namespace: cert-manager
-        data:
-          api-key: {{ requiredEnv "HETZNER_API_KEY" | b64enc }}
+    disableValidation: true
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - hetznerDnsApiKey: {{ requiredEnv "HETZNER_API_KEY" }}
