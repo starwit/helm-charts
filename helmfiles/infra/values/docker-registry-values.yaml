@@ -14,3 +14,6 @@ ingress:
 
 garbageCollect:
   enabled: true
+
+secrets:
+  htpasswd: "docker:$2y$05$B93sKz/ZVDW0Wp/jUtkPMejmKlrFMt7/AvSwnT9hZpXy2FpVJaHpO"

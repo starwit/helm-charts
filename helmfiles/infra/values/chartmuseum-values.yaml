@@ -12,3 +12,7 @@ ingress:
 env:
   open:
     DISABLE_API: false
+  existingSecret: chartmuseum-auth
+  existingSecretMappings:
+    BASIC_AUTH_USER: basic-auth-user
+    BASIC_AUTH_PASS: basic-auth-pass
