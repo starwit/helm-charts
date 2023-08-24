@@ -1,0 +1,32 @@
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+resources: {}
+
+videoSource:
+  image: 
+    repository: docker.internal.starwit-infra.de/video-source-py
+    tag: ""
+  # configs: []
+  configs: 
+  - id: video1
+    uri: /video
+    # This limits fps to the fps of the source (only really makes sense with video files, if a camera shall be simulated)
+    useSourceFps: True
+    logLevel: DEBUG
+    redis:
+      host: redis
+      port: 6379
+
+redis:
+  architecture: standalone
+  master:
+    persistence:
+      enabled: false

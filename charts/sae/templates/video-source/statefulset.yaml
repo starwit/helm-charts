@@ -1,0 +1,61 @@
+{{- with .Values.videoSource }}
+{{- $outerConfig := . }}
+{{- range .configs -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "sae.fullname" $ }}-video-source-{{ .id }}
+  labels:
+    {{- include "sae.labels" $ | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "sae.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      {{- with $.Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "sae.selectorLabels" $ | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "sae.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $.Chart.Name }}
+          securityContext:
+            {{- toYaml $.Values.securityContext | nindent 12 }}
+          image: "{{ $outerConfig.image.repository }}:{{ $outerConfig.image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: IfNotPresent
+          resources:
+            {{- toYaml $.Values.resources | nindent 12 }}
+          env:
+            - name: ID
+              value: {{ .id }}
+            - name: URI
+              value: {{ .uri }}
+            - name: USE_SOURCE_FPS
+              value: {{ .useSourceFps }}
+            - name: LOG_LEVEL
+              value: {{ .logLevel }}
+            - name: REDIS__HOST
+              value: {{ .redis.host }}
+            - name: REDIS__PORT
+              value: {{ .redis.port }}
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+{{- end }}
+{{- end }}
