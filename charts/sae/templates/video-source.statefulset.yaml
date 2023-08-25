@@ -1,5 +1,6 @@
 {{- with .Values.videoSource }}
-{{- $outerConfig := . }}
+{{- $imageRepo := .image.repository }}
+{{- $imageTag := .image.tag }}
 {{- range .configs -}}
 apiVersion: apps/v1
 kind: StatefulSet
@@ -7,10 +8,12 @@ metadata:
   name: {{ include "sae.fullname" $ }}-video-source-{{ .id }}
   labels:
     {{- include "sae.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: video-source
 spec:
   selector:
     matchLabels:
       {{- include "sae.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: video-source-{{ .id }}
   template:
     metadata:
       {{- with $.Values.podAnnotations }}
@@ -19,6 +22,7 @@ spec:
       {{- end }}
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
+        app.kubernetes.io/component: video-source-{{ .id }}
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
@@ -27,23 +31,23 @@ spec:
         - name: {{ $.Chart.Name }}
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
-          image: "{{ $outerConfig.image.repository }}:{{ $outerConfig.image.tag | default $.Chart.AppVersion }}"
+          image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
           resources:
             {{- toYaml $.Values.resources | nindent 12 }}
           env:
             - name: ID
-              value: {{ .id }}
+              value: {{ .id | quote }}
             - name: URI
-              value: {{ .uri }}
+              value: {{ .uri | quote }}
             - name: USE_SOURCE_FPS
-              value: {{ .useSourceFps }}
+              value: {{ .useSourceFps | quote }}
             - name: LOG_LEVEL
-              value: {{ .logLevel }}
+              value: {{ .logLevel | quote }}
             - name: REDIS__HOST
-              value: {{ .redis.host }}
+              value: {{ include "sae.redisServiceName" $ }}
             - name: REDIS__PORT
-              value: {{ .redis.port }}
+              value: {{ include "sae.redisServicePort" $ }}
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

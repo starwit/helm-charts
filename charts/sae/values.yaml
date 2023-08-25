@@ -1,4 +1,5 @@
-imagePullSecrets: []
+imagePullSecrets:
+  - name: docker-starwit-internal
 nameOverride: ""
 fullnameOverride: ""
 
@@ -12,21 +13,48 @@ resources: {}
 
 videoSource:
   image: 
-    repository: docker.internal.starwit-infra.de/video-source-py
+    repository: docker.internal.starwit-infra.de/sae/video-source-py
     tag: ""
   # configs: []
   configs: 
   - id: video1
-    uri: /video
+    uri: rtsp://florian-p14s:8554/ondemand
     # This limits fps to the fps of the source (only really makes sense with video files, if a camera shall be simulated)
     useSourceFps: True
     logLevel: DEBUG
+
+objectDetector:
+  image:
+    repository: docker.internal.starwit-infra.de/sae/object-detector
+    tag: ""
+  config:
+    modelConfig:
+      size: "n"
+      device: cpu
+    inferenceSize: [ 640, 640 ]
+    classes: [ 2 ]
+    logLevel: DEBUG
     redis:
-      host: redis
-      port: 6379
+      streamIds:
+        - video1
+
+objectTracker:
+  image:
+    repository: docker.internal.starwit-infra.de/sae/object-tracker
+    tag: ""
+  configs:
+    - streamId: video1
+      trackingParams:
+        detThresh: 0.25
+        modelWeights: osnet_x0_25_msmt17.pt
+      device: cpu
+      logLevel: DEBUG
+        
 
 redis:
   architecture: standalone
+  auth:
+    enabled: false
   master:
     persistence:
       enabled: false

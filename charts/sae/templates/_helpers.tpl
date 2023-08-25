@@ -56,3 +56,18 @@ Create the name of the service account to use
 {{- define "sae.serviceAccountName" -}}
 {{- include "sae.fullname" . }}
 {{- end }}
+
+{{/*
+Derive redis service name
+*/}}
+{{- define "sae.redisServiceName" -}}
+{{- printf "%s-%s" .Release.Name "redis-master" -}}
+{{- end }}
+
+{{/*
+Hard-code Redis service port (for now)
+*/}}
+{{- define "sae.redisServicePort" -}}
+"6379"
+{{- end }}
+
