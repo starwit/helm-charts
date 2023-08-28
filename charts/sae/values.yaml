@@ -28,7 +28,7 @@ objectDetector:
     repository: docker.internal.starwit-infra.de/sae/object-detector
     tag: ""
   config:
-    modelConfig:
+    model:
       size: "n"
       device: cpu
     inferenceSize: [ 640, 640 ]

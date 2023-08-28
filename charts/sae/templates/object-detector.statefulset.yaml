@@ -36,10 +36,10 @@ spec:
           resources:
             {{- toYaml $.Values.resources | nindent 12 }}
           env:
-            - name: MODEL_CONFIG__SIZE
-              value: {{ .modelConfig.size | quote }}
-            - name: MODEL_CONFIG__DEVICE
-              value: {{ .modelConfig.device | quote }}
+            - name: MODEL__SIZE
+              value: {{ .model.size | quote }}
+            - name: MODEL__DEVICE
+              value: {{ .model.device | quote }}
             - name: INFERENCE_SIZE
               value: {{ toJson .inferenceSize | quote }}
             - name: CLASSES
