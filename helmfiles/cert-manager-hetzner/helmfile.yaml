@@ -1,0 +1,33 @@
+repositories:
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: cert-manager-webhook-hetzner
+    url: https://vadimkim.github.io/cert-manager-webhook-hetzner
+
+releases:
+
+  - name: cert-manager
+    chart: jetstack/cert-manager
+    version: v1.12.3
+    namespace: cert-manager
+    values:
+      - installCRDs: true
+
+  - name: cert-manager-webhook-hetzner
+    chart: cert-manager-webhook-hetzner/cert-manager-webhook-hetzner
+    version: 1.2.2
+    namespace: cert-manager
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - groupName: acme.starwit.de
+
+  - name: extra-resources
+    chart: ./extra-resources
+    # This option does probably not work (it is supposed to work around the issue that CRDs are missing on first install)
+    disableValidation: true
+    namespace: cert-manager
+    needs:
+      - cert-manager/cert-manager
+    values:
+      - hetznerDnsApiKey: {{ requiredEnv "HETZNER_API_KEY" }}
