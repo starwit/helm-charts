@@ -17,3 +17,8 @@ garbageCollect:
 
 secrets:
   htpasswd: "docker:$2y$05$B93sKz/ZVDW0Wp/jUtkPMejmKlrFMt7/AvSwnT9hZpXy2FpVJaHpO"
+
+configData:
+  storage:
+    delete:
+      enabled: true
