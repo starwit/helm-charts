@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: chartmuseum-tls
+  namespace: chartmuseum
+spec:
+  commonName: helm.internal.starwit-infra.de
+  dnsNames:
+    - helm.internal.starwit-infra.de
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  secretName: chartmuseum-tls

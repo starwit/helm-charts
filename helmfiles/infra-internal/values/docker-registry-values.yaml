@@ -1,0 +1,24 @@
+persistence:
+  enabled: true
+  size: 50Gi # According to the local-path-provisioner docs the size is not supported atm
+
+ingress:
+  enabled: true
+  className: traefik
+  hosts:
+    - docker.internal.starwit-infra.de
+  tls:
+    - secretName: docker-registry-tls
+      hosts:
+        - docker.internal.starwit-infra.de
+
+garbageCollect:
+  enabled: true
+
+secrets:
+  htpasswd: "docker:$2y$05$B93sKz/ZVDW0Wp/jUtkPMejmKlrFMt7/AvSwnT9hZpXy2FpVJaHpO"
+
+configData:
+  storage:
+    delete:
+      enabled: true
