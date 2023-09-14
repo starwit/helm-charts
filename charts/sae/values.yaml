@@ -9,8 +9,6 @@ podSecurityContext: {}
 
 securityContext: {}
 
-resources: {}
-
 videoSource:
   image: 
     repository: docker.internal.starwit-infra.de/sae/video-source-py
@@ -18,9 +16,9 @@ videoSource:
   # configs: []
   configs: 
   - id: video1
-    uri: rtsp://florian-p14s:8554/ondemand
+    uri: 'rtsp://vwvideo:Carmel,2021!@100.97.228.110:11554/?inst=0'
     # This limits fps to the fps of the source (only really makes sense with video files, if a camera shall be simulated)
-    useSourceFps: True
+    useSourceFps: False
     logLevel: DEBUG
 
 objectDetector:
@@ -30,7 +28,7 @@ objectDetector:
   config:
     model:
       size: "n"
-      device: cpu
+      device: cuda
     inferenceSize: [ 640, 640 ]
     classes: [ 2 ]
     logLevel: DEBUG
@@ -47,9 +45,23 @@ objectTracker:
       trackingParams:
         detThresh: 0.25
         modelWeights: osnet_x0_25_msmt17.pt
-      device: cpu
+      device: cuda
       logLevel: DEBUG
-        
+
+databaseWriter:
+  image:
+    repository: docker.internal.starwit-infra.de/sae/database-writer
+    tag: ""
+  config:
+    redisStreamIds:
+      - video1
+      - video2
+    db:
+      jdbcUrl: jdbc:postgresql:postgres
+      schema: postgres
+      username: postgres
+      password: postgres
+      hypertable: data
 
 redis:
   architecture: standalone

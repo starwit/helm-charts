@@ -1,20 +1,19 @@
-{{- with .Values.objectDetector }}
+{{- with .Values.databaseWriter }}
 {{- $imageRepo := .image.repository }}
 {{- $imageTag := .image.tag }}
-{{- with .config }}
-{{- $isUsingGpu := hasPrefix "cuda" .model.device }}
+{{- with .config -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "sae.fullname" $ }}-object-detector
+  name: {{ include "sae.fullname" $ }}-database-writer
   labels:
     {{- include "sae.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: object-detector
+    app.kubernetes.io/component: database-writer
 spec:
   selector:
     matchLabels:
       {{- include "sae.selectorLabels" $ | nindent 6 }}
-      app.kubernetes.io/component: object-detector
+      app.kubernetes.io/component: database-writer
   template:
     metadata:
       {{- with $.Values.podAnnotations }}
@@ -23,42 +22,40 @@ spec:
       {{- end }}
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
-        app.kubernetes.io/component: object-detector
+        app.kubernetes.io/component: database-writer
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
         {{- toYaml $.Values.podSecurityContext | nindent 8 }}
-      {{- if $isUsingGpu }}
-      runtimeClassName: nvidia
-      {{- end }}
       containers:
-        - name: object-detector
+        - name: database-writer
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
           image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
-          {{- if $isUsingGpu }}
           resources:
-            limits:
-              nvidia.com/gpu: 1
-          {{- end }}
+            {{- toYaml $.Values.resources | nindent 12 }}
           env:
-            - name: MODEL__SIZE
-              value: {{ .model.size | quote }}
-            - name: MODEL__DEVICE
-              value: {{ .model.device | quote }}
-            - name: INFERENCE_SIZE
-              value: {{ toJson .inferenceSize | quote }}
-            - name: CLASSES
-              value: {{ toJson .classes | quote }}
-            - name: LOG_LEVEL
-              value: {{ .logLevel | quote }}
-            - name: REDIS__HOST
+            - name: DB_OUTPUT_ENABLED
+              value: "true"
+            - name: DB_JDBC_URL
+              value: {{ .db.jdbcUrl | quote }}
+            - name: DB_SCHEMA
+              value: {{ .db.schema | quote }}
+            - name: DB_USERNAME
+              value: {{ .db.username | quote }}
+            - name: DB_PASSWORD
+              value: {{ .db.password | quote }}
+            - name: DB_HYPERTABLE
+              value: {{ .db.hypertable | quote }}
+            - name: REDIS_INPUT_ENABLED
+              value: "true"
+            - name: REDIS_HOST
               value: {{ include "sae.redisServiceName" $ }}
-            - name: REDIS__PORT
+            - name: REDIS_PORT
               value: {{ include "sae.redisServicePort" $ }}
-            - name: REDIS__STREAM_IDS
-              value: {{ toJson .redis.streamIds | quote }}
+            - name: REDIS_STREAM_IDS
+              value: {{ join "," .redisStreamIds | quote }}
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -71,5 +68,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+---
 {{- end }}
 {{- end }}

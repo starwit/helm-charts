@@ -2,6 +2,7 @@
 {{- $imageRepo := .image.repository }}
 {{- $imageTag := .image.tag }}
 {{- range .configs }}
+{{- $isUsingGpu := hasPrefix "cuda" .device }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -27,14 +28,20 @@ spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
         {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      {{- if $isUsingGpu }}
+      runtimeClassName: nvidia
+      {{- end }}
       containers:
-        - name: {{ $.Chart.Name }}
+        - name: object-tracker-{{ .streamId }}
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
           image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
+          {{- if $isUsingGpu }}
           resources:
-            {{- toYaml $.Values.resources | nindent 12 }}
+            limits:
+              nvidia.com/gpu: 1
+          {{- end }}
           env:
             - name: TRACKING_PARAMS__DET_THRESH
               value: {{ .trackingParams.detThresh | quote }}
