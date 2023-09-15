@@ -1,13 +1,12 @@
-imagePullSecrets:
-  - name: docker-starwit-internal
 nameOverride: ""
 fullnameOverride: ""
 
-podAnnotations: {}
+pullSecret:
+  user: user
+  password: password
 
-podSecurityContext: {}
-
-securityContext: {}
+# extraImagePullSecrets:
+#   - name: extra-pull-secret
 
 videoSource:
   image: 
@@ -16,7 +15,7 @@ videoSource:
   # configs: []
   configs: 
   - id: video1
-    uri: 'rtsp://vwvideo:Carmel,2021!@100.97.228.110:11554/?inst=0'
+    uri: 'uri'
     # This limits fps to the fps of the source (only really makes sense with video files, if a camera shall be simulated)
     useSourceFps: False
     logLevel: DEBUG
@@ -28,7 +27,7 @@ objectDetector:
   config:
     model:
       size: "n"
-      device: cuda
+      device: cpu
     inferenceSize: [ 640, 640 ]
     classes: [ 2 ]
     logLevel: DEBUG
@@ -45,23 +44,22 @@ objectTracker:
       trackingParams:
         detThresh: 0.25
         modelWeights: osnet_x0_25_msmt17.pt
-      device: cuda
+      device: cpu
       logLevel: DEBUG
 
 databaseWriter:
   image:
-    repository: docker.internal.starwit-infra.de/sae/database-writer
-    tag: ""
+    repository: docker.internal.starwit-infra.de/sae/vision-api-jms-client
+    tag: 0.3.0
   config:
     redisStreamIds:
       - video1
-      - video2
     db:
-      jdbcUrl: jdbc:postgresql:postgres
-      schema: postgres
-      username: postgres
-      password: postgres
-      hypertable: data
+      jdbcUrl: jdbc:postgresql://100.70.113.34:30001/
+      schema: sae
+      username: sae
+      password: sae
+      hypertable: detection2
 
 redis:
   architecture: standalone
