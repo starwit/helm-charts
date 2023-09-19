@@ -3,18 +3,19 @@
 {{- $imageTag := .image.tag }}
 {{- range .configs }}
 {{- $isUsingGpu := hasPrefix "cuda" .device }}
+{{- $instanceName := printf "object-tracker-%s" (lower .streamId) }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "sae.fullname" $ }}-object-tracker-{{ .streamId }}
+  name: {{ include "sae.fullname" $ }}-{{ $instanceName }}
   labels:
     {{- include "sae.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: object-tracker-{{ .streamId }}
+    app.kubernetes.io/component: {{ $instanceName }}
 spec:
   selector:
     matchLabels:
       {{- include "sae.selectorLabels" $ | nindent 6 }}
-      app.kubernetes.io/component: object-tracker-{{ .streamId }}
+      app.kubernetes.io/component: {{ $instanceName }}
   template:
     metadata:
       {{- with $.Values.podAnnotations }}
@@ -23,7 +24,7 @@ spec:
       {{- end }}
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
-        app.kubernetes.io/component: object-tracker-{{ .streamId }}
+        app.kubernetes.io/component: {{ $instanceName }}
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
@@ -32,7 +33,7 @@ spec:
       runtimeClassName: nvidia
       {{- end }}
       containers:
-        - name: object-tracker-{{ .streamId }}
+        - name: {{ $instanceName }}
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
           image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"

@@ -65,6 +65,9 @@ redis:
   architecture: standalone
   auth:
     enabled: false
+  commonConfiguration: |-
+    save ""
+    appendonly no
   master:
     persistence:
       enabled: false

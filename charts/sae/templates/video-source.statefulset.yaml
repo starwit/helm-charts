@@ -2,10 +2,11 @@
 {{- $imageRepo := .image.repository }}
 {{- $imageTag := .image.tag }}
 {{- range .configs -}}
+{{- $instanceName := printf "video-source-%s" (lower .id) }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "sae.fullname" $ }}-video-source-{{ .id }}
+  name: {{ include "sae.fullname" $ }}-{{ $instanceName }}
   labels:
     {{- include "sae.labels" $ | nindent 4 }}
     app.kubernetes.io/component: video-source
@@ -13,7 +14,7 @@ spec:
   selector:
     matchLabels:
       {{- include "sae.selectorLabels" $ | nindent 6 }}
-      app.kubernetes.io/component: video-source-{{ .id }}
+      app.kubernetes.io/component: {{ $instanceName }}
   template:
     metadata:
       {{- with $.Values.podAnnotations }}
@@ -22,13 +23,13 @@ spec:
       {{- end }}
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
-        app.kubernetes.io/component: video-source-{{ .id }}
+        app.kubernetes.io/component: {{ $instanceName }}
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
         {{- toYaml $.Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: video-source-{{ .id }}
+        - name: {{ $instanceName }}
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
           image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"
