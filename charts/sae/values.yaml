@@ -71,3 +71,28 @@ redis:
   master:
     persistence:
       enabled: false
+  metrics:
+    enabled: true
+
+prometheus:
+  alertmanager:
+    enabled: false
+  server:
+    service:
+      type: ClusterIP
+    scrapeInterval: 10s
+    evaluationInterval: 10s
+    extraScrapeConfigs:
+      - job_name: redis_exporter
+        static_configs:
+          - targets: ['{{ include "sae.redisMetricsServiceName" $ }}:9121']
+      - job_name: node_exporter
+        static_configs:
+          - targets: ['{{ include "sae.nodeExporterServiceName" $ }}:9100']
+
+grafana:
+  admin:
+    password: admin
+
+nodeexporter:
+  enabled: true

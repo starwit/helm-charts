@@ -65,9 +65,22 @@ Derive redis service name
 {{- end }}
 
 {{/*
+Derive redis metrics service name
+*/}}
+{{- define "sae.redisMetricsServiceName" -}}
+{{- printf "%s-%s" .Release.Name "redis-metrics" -}}
+{{- end }}
+
+{{/*
 Hard-code Redis service port (for now)
 */}}
 {{- define "sae.redisServicePort" -}}
 "6379"
 {{- end }}
 
+{{/*
+Derive redis metrics service name
+*/}}
+{{- define "sae.nodeExporterServiceName" -}}
+{{- printf "%s-%s" .Release.Name "nodeexporter" -}}
+{{- end }}
