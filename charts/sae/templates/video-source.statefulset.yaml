@@ -41,8 +41,8 @@ spec:
               value: {{ .id | quote }}
             - name: URI
               value: {{ .uri | quote }}
-            - name: USE_SOURCE_FPS
-              value: {{ .useSourceFps | quote }}
+            - name: MAX_FPS
+              value: {{ .maxFps | quote }}
             - name: LOG_LEVEL
               value: {{ .logLevel | quote }}
             - name: REDIS__HOST
