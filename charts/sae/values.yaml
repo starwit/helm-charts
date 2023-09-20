@@ -11,13 +11,11 @@ pullSecret:
 videoSource:
   image: 
     repository: docker.internal.starwit-infra.de/sae/video-source-py
-    tag: ""
+    tag: 0.6.0
   # configs: []
   configs: 
   - id: video1
     uri: 'uri'
-    # This limits fps to the fps of the source (only really makes sense with video files, if a camera shall be simulated)
-    useSourceFps: False
     logLevel: DEBUG
 
 objectDetector:
