@@ -11,7 +11,7 @@ pullSecret:
 videoSource:
   image: 
     repository: docker.internal.starwit-infra.de/sae/video-source-py
-    tag: 0.6.0
+    tag: 0.7.0
   # configs: []
   configs: 
   - id: video1
@@ -87,6 +87,18 @@ prometheus:
       - job_name: node_exporter
         static_configs:
           - targets: ['{{ include "sae.nodeExporterServiceName" $ }}:9100']
+      - job_name: video_source
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              own_namespace: true
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+            action: keep
+            regex: video-source-.*
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: pod
 
 grafana:
   admin:

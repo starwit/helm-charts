@@ -49,6 +49,9 @@ spec:
               value: {{ include "sae.redisServiceName" $ }}
             - name: REDIS__PORT
               value: {{ include "sae.redisServicePort" $ }}
+          ports:
+            - name: prometheus
+              containerPort: 8000
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
