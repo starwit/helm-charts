@@ -84,3 +84,10 @@ Derive redis metrics service name
 {{- define "sae.nodeExporterServiceName" -}}
 {{- printf "%s-%s" .Release.Name "nodeexporter" -}}
 {{- end }}
+
+{{/*
+Derive prometheus service name
+*/}}
+{{- define "sae.prometheusServiceName" -}}
+{{- printf "%s-%s" .Release.Name "prometheus-server" -}}
+{{- end }}

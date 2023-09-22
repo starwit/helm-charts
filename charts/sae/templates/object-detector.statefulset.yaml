@@ -17,14 +17,11 @@ spec:
       app.kubernetes.io/component: object-detector
   template:
     metadata:
-      {{- with $.Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        sae.starwit.de/stage: object-detector
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: object-detector
-        sae.starwit.de/stage: object-detector
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
@@ -32,6 +29,10 @@ spec:
       {{- if $isUsingGpu }}
       runtimeClassName: nvidia
       {{- end }}
+      initContainers:
+        - name: wait-for-redis
+          image: redis:7.2-alpine
+          command: ["sh", "-c", "while ! redis-cli -h {{ include "sae.redisServiceName" $ }} ping ; do echo \"$(date -Iseconds) - still waiting for redis\"; sleep 1; done"]
       containers:
         - name: object-detector
           securityContext:

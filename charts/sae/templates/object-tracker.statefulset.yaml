@@ -18,14 +18,11 @@ spec:
       app.kubernetes.io/component: {{ $instanceName }}
   template:
     metadata:
-      {{- with $.Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        sae.starwit.de/stage: object-tracker
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: {{ $instanceName }}
-        sae.starwit.de/stage: object-tracker
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
@@ -33,6 +30,10 @@ spec:
       {{- if $isUsingGpu }}
       runtimeClassName: nvidia
       {{- end }}
+      initContainers:
+        - name: wait-for-redis
+          image: redis:7.2-alpine
+          command: ["sh", "-c", "while ! redis-cli -h {{ include "sae.redisServiceName" $ }} ping ; do echo \"$(date -Iseconds) - still waiting for redis\"; sleep 1; done"]
       containers:
         - name: {{ $instanceName }}
           securityContext:

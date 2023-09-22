@@ -93,13 +93,13 @@ prometheus:
             namespaces:
               own_namespace: true
         relabel_configs:
-          - source_labels: [__meta_kubernetes_pod_label_sae_starwit_de_stage]
+          - source_labels: [__meta_kubernetes_pod_annotation_sae_starwit_de_stage]
             action: keep
             regex: (video-source|object-detector|object-tracker)
           - source_labels: [__meta_kubernetes_pod_name]
             action: replace
             target_label: pod
-          - source_labels: [__meta_kubernetes_pod_label_sae_starwit_de_stage]
+          - source_labels: [__meta_kubernetes_pod_annotation_sae_starwit_de_stage]
             action: replace
             target_label: stage
           
@@ -107,6 +107,15 @@ prometheus:
 grafana:
   admin:
     password: admin
+  datasources:
+    secretDefinition: 
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://{{ include "sae.prometheusServiceName" . }}
+
 
 nodeexporter:
   enabled: true
