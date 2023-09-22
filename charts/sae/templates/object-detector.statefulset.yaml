@@ -1,6 +1,6 @@
 {{- with .Values.objectDetector }}
-{{- $imageRepo := .image.repository }}
-{{- $imageTag := .image.tag }}
+{{- $imageRepo := required "image repository for object-detector is required" .image.repository }}
+{{- $imageTag := required "image tag for object-detector is required" .image.tag }}
 {{- with .config }}
 {{- $isUsingGpu := hasPrefix "cuda" .model.device }}
 apiVersion: apps/v1
@@ -24,6 +24,7 @@ spec:
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: object-detector
+        sae.starwit.de/stage: object-detector
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
@@ -35,7 +36,7 @@ spec:
         - name: object-detector
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
-          image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"
+          image: "{{ $imageRepo }}:{{ $imageTag }}"
           imagePullPolicy: IfNotPresent
           {{- if $isUsingGpu }}
           resources:
@@ -59,6 +60,9 @@ spec:
               value: {{ include "sae.redisServicePort" $ }}
             - name: REDIS__STREAM_IDS
               value: {{ toJson .redis.streamIds | quote }}
+          ports:
+            - name: prometheus
+              containerPort: 8000
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

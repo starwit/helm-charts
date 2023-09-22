@@ -1,6 +1,6 @@
 {{- with .Values.objectTracker }}
-{{- $imageRepo := .image.repository }}
-{{- $imageTag := .image.tag }}
+{{- $imageRepo := required "image repository for object-tracker is required" .image.repository }}
+{{- $imageTag := required "image tag for object-tracker is required" .image.tag }}
 {{- range .configs }}
 {{- $isUsingGpu := hasPrefix "cuda" .device }}
 {{- $instanceName := printf "object-tracker-%s" (lower .streamId) }}
@@ -25,6 +25,7 @@ spec:
       labels:
         {{- include "sae.selectorLabels" $ | nindent 8 }}
         app.kubernetes.io/component: {{ $instanceName }}
+        sae.starwit.de/stage: object-tracker
     spec:
       serviceAccountName: {{ include "sae.serviceAccountName" $ }}
       securityContext:
@@ -36,7 +37,7 @@ spec:
         - name: {{ $instanceName }}
           securityContext:
             {{- toYaml $.Values.securityContext | nindent 12 }}
-          image: "{{ $imageRepo }}:{{ $imageTag | default $.Chart.AppVersion }}"
+          image: "{{ $imageRepo }}:{{ $imageTag }}"
           imagePullPolicy: IfNotPresent
           {{- if $isUsingGpu }}
           resources:
@@ -58,6 +59,9 @@ spec:
               value: {{ include "sae.redisServicePort" $ }}
             - name: REDIS__STREAM_ID
               value: {{ .streamId | quote }}
+          ports:
+            - name: prometheus
+              containerPort: 8000
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

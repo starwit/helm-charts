@@ -11,7 +11,7 @@ pullSecret:
 videoSource:
   image: 
     repository: docker.internal.starwit-infra.de/sae/video-source-py
-    tag: 0.7.0
+    tag: 0.7.1
   # configs: []
   configs: 
   - id: video1
@@ -21,7 +21,7 @@ videoSource:
 objectDetector:
   image:
     repository: docker.internal.starwit-infra.de/sae/object-detector
-    tag: ""
+    tag: 0.6.0
   config:
     model:
       size: "n"
@@ -36,7 +36,7 @@ objectDetector:
 objectTracker:
   image:
     repository: docker.internal.starwit-infra.de/sae/object-tracker
-    tag: ""
+    tag: 0.6.0
   configs:
     - streamId: video1
       trackingParams:
@@ -87,18 +87,22 @@ prometheus:
       - job_name: node_exporter
         static_configs:
           - targets: ['{{ include "sae.nodeExporterServiceName" $ }}:9100']
-      - job_name: video_source
+      - job_name: sae_pods
         kubernetes_sd_configs:
           - role: pod
             namespaces:
               own_namespace: true
         relabel_configs:
-          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+          - source_labels: [__meta_kubernetes_pod_label_sae_starwit_de_stage]
             action: keep
-            regex: video-source-.*
+            regex: (video-source|object-detector|object-tracker)
           - source_labels: [__meta_kubernetes_pod_name]
             action: replace
             target_label: pod
+          - source_labels: [__meta_kubernetes_pod_label_sae_starwit_de_stage]
+            action: replace
+            target_label: stage
+          
 
 grafana:
   admin:
