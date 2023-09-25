@@ -11,7 +11,7 @@ pullSecret:
 videoSource:
   image: 
     repository: docker.internal.starwit-infra.de/sae/video-source-py
-    tag: 0.7.1
+    tag: 0.7.2
   # configs: []
   configs: 
   - id: video1
