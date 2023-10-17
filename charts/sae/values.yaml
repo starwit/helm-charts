@@ -48,7 +48,7 @@ objectTracker:
 databaseWriter:
   image:
     repository: docker.internal.starwit-infra.de/sae/vision-api-jms-client
-    tag: 0.4.0
+    tag: 0.4.1
   config:
     redisStreamIds:
       - video1
