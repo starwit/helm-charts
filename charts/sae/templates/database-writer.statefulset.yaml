@@ -58,6 +58,8 @@ spec:
               value: {{ include "sae.redisServicePort" $ }}
             - name: REDIS_STREAM_IDS
               value: {{ join "," .redisStreamIds | quote }}
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xmx512m"
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
