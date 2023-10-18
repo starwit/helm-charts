@@ -45,6 +45,8 @@ spec:
               value: {{ .uri | quote }}
             - name: MAX_FPS
               value: {{ default 0 .maxFps | quote }}
+            - name: JPEG_ENCODE
+              value: {{ default "True" .jpegEncode | quote }}
             - name: LOG_LEVEL
               value: {{ default "INFO" .logLevel | quote }}
             - name: REDIS__HOST

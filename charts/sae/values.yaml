@@ -11,7 +11,7 @@ pullSecret:
 videoSource:
   image: 
     repository: docker.internal.starwit-infra.de/sae/video-source-py
-    tag: 0.7.2
+    tag: 0.8.0
   # configs: []
   configs: 
   - id: video1
@@ -21,7 +21,7 @@ videoSource:
 objectDetector:
   image:
     repository: docker.internal.starwit-infra.de/sae/object-detector
-    tag: 0.6.0
+    tag: 0.7.0
   config:
     model:
       size: "n"
@@ -36,7 +36,7 @@ objectDetector:
 objectTracker:
   image:
     repository: docker.internal.starwit-infra.de/sae/object-tracker
-    tag: 0.6.0
+    tag: 0.7.0
   configs:
     - streamId: video1
       trackingParams:
